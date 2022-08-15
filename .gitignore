@@ -5,6 +5,8 @@ target/
 !**/src/test/**/target/
 
 .log
+token.txt
+http
 
 ### STS ###
 .apt_generated
