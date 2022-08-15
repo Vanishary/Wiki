@@ -1,6 +1,11 @@
 package com.epra.wiki.service;
 
+import com.epra.wiki.domain.Demo;
+import com.epra.wiki.mapper.DemoMapper;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Guotao Li
@@ -10,10 +15,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemoService {
 
-//    @Resource
-//    private DemooMapper demoMapper;
-//
-//    public List<Demo> list() {
-//        return demoMapper.list();
-//    }
+    @Resource
+    private DemoMapper demoMapper;
+
+    public List<Demo> list() {
+        return demoMapper.selectByExample(null);
+    }
 }
