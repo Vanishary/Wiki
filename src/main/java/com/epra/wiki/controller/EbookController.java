@@ -1,7 +1,8 @@
 package com.epra.wiki.controller;
 
-import com.epra.wiki.domain.Ebook;
+import com.epra.wiki.req.EbookReq;
 import com.epra.wiki.resp.CommonResp;
+import com.epra.wiki.resp.EbookResp;
 import com.epra.wiki.service.EbookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +28,9 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list() {
-        CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> list = ebookService.list();
+    public CommonResp list(EbookReq ebookReq) {
+        CommonResp<List<EbookResp>> resp = new CommonResp<>();
+        List<EbookResp> list = ebookService.list(ebookReq);
         resp.setContent(list);
         return resp;
     }
