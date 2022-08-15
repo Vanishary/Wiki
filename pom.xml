@@ -98,7 +98,7 @@
 <!--    </pluginRepositories>-->
 
     <build>
-        <finalName>/dist/${artifactId}</finalName>
+<!--        <finalName>/dist/${artifactId}</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

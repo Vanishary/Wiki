@@ -22,22 +22,22 @@
         </commentGenerator>
 
 <!--        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"-->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/wiki"
                         userId="wikitest"
                         password="Passw0rd">
         </jdbcConnection>
 
         <!-- domain类的位置 -->
-        <javaModelGenerator targetProject="src\main\java"
+        <javaModelGenerator targetProject="src/main/java"
                             targetPackage="com.epra.wiki.domain"/>
 
         <!-- mapper xml的位置 -->
-        <sqlMapGenerator targetProject="src\main\resources"
+        <sqlMapGenerator targetProject="src/main/resources"
                          targetPackage="mapper"/>
 
         <!-- mapper类的位置 -->
-        <javaClientGenerator targetProject="src\main\java"
+        <javaClientGenerator targetProject="src/main/java"
                              targetPackage="com.epra.wiki.mapper"
                              type="XMLMAPPER"/>
 
@@ -47,6 +47,6 @@
         <!--<table tableName="doc"/>-->
         <!--<table tableName="content"/>-->
         <!--<table tableName="user"/>-->
-        <table tableName="ebook_snapshot"/>
+        <table tableName="demo" domainObjectName="Demo"/>
     </context>
 </generatorConfiguration>
