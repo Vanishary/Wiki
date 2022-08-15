@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @Author: Guotao Li
  * @DateTime: 2022/8/14 3:17 下午
- * @Description: TODO
+ * @Description: 电子书列表查询接口Controller
  */
 @RestController
 @RequestMapping("/ebook")
