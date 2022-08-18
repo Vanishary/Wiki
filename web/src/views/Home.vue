@@ -101,7 +101,7 @@
 
             onMounted(() => {
                 // onMounted()中写入需要初始化的内容，如果直接写在setup()中可能界面还未初始化完成便为某个元素设置值会报错
-                console.log("onMounted111111")
+                console.log("onMounted2222")
                 axios.get(process.env.VUE_APP_SERVER + "/ebook/list").then((response) => {
                     const data = response.data;
                     ebooks.value = data.content
