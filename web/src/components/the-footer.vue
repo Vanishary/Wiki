@@ -1,5 +1,5 @@
 <template>
-    <a-layout-footer style="text-align: center">
+    <a-layout-footer style="text-align: center" >
         @Wiki EPRA
     </a-layout-footer>
 </template>
@@ -11,3 +11,14 @@
         name: 'the-footer'
     });
 </script>
+
+<style scoped>
+    .m-content-display {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+    }
+    .m-router-view {
+        flex: 1;
+    }
+</style>

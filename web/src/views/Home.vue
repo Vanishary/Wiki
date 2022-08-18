@@ -94,19 +94,16 @@
         name: 'Home',
         // setup()中写参数定义、方法定义
         setup() {
-            console.log("setup")
             // ref()定义响应式数据，即在js中动态的修改里面的值
             const ebooks = ref();
             const ebooks1 = reactive({books: []});
 
             onMounted(() => {
                 // onMounted()中写入需要初始化的内容，如果直接写在setup()中可能界面还未初始化完成便为某个元素设置值会报错
-                console.log("onMounted2222")
                 axios.get(process.env.VUE_APP_SERVER + "/ebook/list").then((response) => {
                     const data = response.data;
                     ebooks.value = data.content
                     ebooks1.books = data.content
-                    console.log(response);
                 });
             });
 
