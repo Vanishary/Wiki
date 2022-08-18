@@ -102,7 +102,7 @@
             onMounted(() => {
                 // onMounted()中写入需要初始化的内容，如果直接写在setup()中可能界面还未初始化完成便为某个元素设置值会报错
                 console.log("onMounted")
-                axios.get("http://localhost:8880/ebook/list?name=入门").then((response) => {
+                axios.get("http://localhost:8880/ebook/list").then((response) => {
                     const data = response.data;
                     ebooks.value = data.content
                     ebooks1.books = data.content
@@ -131,7 +131,14 @@
     });
 </script>
 
-<style>
+<style scoped>
+    .ant-avatar {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 8%;
+        margin: 5px 0;
+    }
     .ant-layout-sider {
         float: left;
     }
