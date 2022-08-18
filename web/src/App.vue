@@ -2,9 +2,10 @@
     <a-layout id="components-layout-demo-top-side-2">
         <the-header></the-header>
         <router-view/>
-        <a-layout-footer style="text-align: center">
-            @Wiki EPRA
-        </a-layout-footer>
+<!--        <a-layout-footer style="text-align: center">-->
+<!--            @Wiki EPRA-->
+<!--        </a-layout-footer>-->
+        <the-footer></the-footer>
     </a-layout>
 </template>
 
@@ -29,9 +30,5 @@
         height: 31px;
         margin: 16px 28px 16px 0;
         background: rgba(255, 255, 255, 0.2);
-    }
-
-    .ant-layout-sider {
-        float: left;
     }
 </style>
