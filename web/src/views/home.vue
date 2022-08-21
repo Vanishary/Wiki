@@ -75,19 +75,19 @@
     import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
     import axios from 'axios';
 
-    const listData: any = [];
-
-    for (let i = 0; i < 23; i++) {
-        listData.push({
-            href: 'https://www.antdv.com/',
-            title: `ant design vue part ${i}`,
-            avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-            description:
-                'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-            content:
-                'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-        });
-    }
+    // const listData: any = [];
+    //
+    // for (let i = 0; i < 23; i++) {
+    //     listData.push({
+    //         href: 'https://www.antdv.com/',
+    //         title: `ant design vue part ${i}`,
+    //         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+    //         description:
+    //             'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+    //         content:
+    //             'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+    //     });
+    // }
 
 
     export default defineComponent({
@@ -96,22 +96,28 @@
         setup() {
             // ref()定义响应式数据，即在js中动态的修改里面的值
             const ebooks = ref();
-            const ebooks1 = reactive({books: []});
+            // const ebooks1 = reactive({books: []});
 
             onMounted(() => {
                 // onMounted()中写入需要初始化的内容，如果直接写在setup()中可能界面还未初始化完成便为某个元素设置值会报错
-                axios.get(process.env.VUE_APP_SERVER + "/ebook/list").then((response) => {
+                // XXX:首页后端查询接口后期更新为单独的接口/ebook/all，不用使用分页查询
+                axios.get("/ebook/list", {
+                    params: {
+                        page: 1,
+                        size: 1000
+                    }
+                }).then((response) => {
                     const data = response.data;
-                    ebooks.value = data.content
-                    ebooks1.books = data.content
+                    ebooks.value = data.content.list
+                    // ebooks1.books = data.content
                 });
             });
 
             return {
                 ebooks,
                 // toRef()将变量转变为响应式变量
-                any_name: toRef(ebooks1, "books"),
-                listData,
+                // any_name: toRef(ebooks1, "books"),
+                // listData,
                 pagination: {
                     onChange: (page: any) => {
                         console.log(page);
