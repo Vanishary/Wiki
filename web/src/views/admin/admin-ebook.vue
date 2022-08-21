@@ -125,7 +125,7 @@
             const ebooks = ref();
             const pagination = ref({
                 current: 1,
-                pageSize: 2,
+                pageSize: 4,
                 total: 0
             });
             const loading = ref(false);
@@ -174,7 +174,12 @@
                 loading.value = true;
                 // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
                 ebooks.value = [];
-                axios.get("/ebook/list", params).then((response) => {
+                axios.get("/ebook/list", {
+                    params: {
+                        page: params.page,
+                        size: params.size
+                    }
+                }).then((response) => {
                     loading.value = false;
                     const data = response.data;
                     // if (data.success) {
@@ -182,7 +187,7 @@
 
                         // 重置分页按钮
                         pagination.value.current = params.page;
-                        // pagination.value.total = data.content.total;
+                        pagination.value.total = data.content.total;
                     // } else {
                     //     message.error(data.message);
                     // }
@@ -192,8 +197,9 @@
             /**
              * 表格点击页码时触发
              */
+            // 这里page、size之类的参数名字要与被请求接口对应字段一致，否则后端springBoot框架无法自动识别字段并赋值
             const handleTableChange = (pagination: any) => {
-                console.log("看看自带的分页参数都有啥：" + pagination);
+                console.log("看看自带的分页参数都什么：" + pagination);
                 handleQuery({
                     page: pagination.current,
                     size: pagination.pageSize
@@ -340,7 +346,10 @@
             // };
 
             onMounted(() => {
-                handleQuery({});
+                handleQuery({
+                    page: 1,
+                    size: pagination.value.pageSize,
+                });
             });
 
             return {
