@@ -6,6 +6,7 @@ import com.epra.wiki.domain.EbookExample;
 import com.epra.wiki.mapper.EbookMapper;
 import com.epra.wiki.req.EbookReq;
 import com.epra.wiki.resp.EbookResp;
+import com.epra.wiki.resp.PageResp;
 import com.epra.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,7 +30,7 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public List<EbookResp> list(EbookReq ebookReq) {
+    public PageResp<EbookResp> list(EbookReq ebookReq) {
 
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
@@ -37,7 +38,7 @@ public class EbookService {
             criteria.andNameLike("%" + ebookReq.getName() + "%");
         }
 
-        PageHelper.startPage(1, 3);
+        PageHelper.startPage(ebookReq.getPage(), ebookReq.getSize());
         List<Ebook> ebooksList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebooksList);
@@ -53,7 +54,12 @@ public class EbookService {
 //        }
 
         List<EbookResp> respList = CopyUtil.copyList(ebooksList, EbookResp.class);
-        return respList;
+
+        PageResp<EbookResp> pageResp = new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(respList);
+
+        return pageResp;
     }
 }
 

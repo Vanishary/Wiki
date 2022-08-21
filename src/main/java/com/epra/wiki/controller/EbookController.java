@@ -3,6 +3,7 @@ package com.epra.wiki.controller;
 import com.epra.wiki.req.EbookReq;
 import com.epra.wiki.resp.CommonResp;
 import com.epra.wiki.resp.EbookResp;
+import com.epra.wiki.resp.PageResp;
 import com.epra.wiki.service.EbookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Author: Guotao Li
@@ -29,9 +29,9 @@ public class EbookController {
 
     @GetMapping("/list")
     public CommonResp list(EbookReq ebookReq) {
-        CommonResp<List<EbookResp>> resp = new CommonResp<>();
-        List<EbookResp> list = ebookService.list(ebookReq);
-        resp.setContent(list);
+        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
+        PageResp<EbookResp> pageResp = ebookService.list(ebookReq);
+        resp.setContent(pageResp);
         return resp;
     }
 }
