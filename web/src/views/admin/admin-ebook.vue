@@ -3,24 +3,24 @@
         <a-layout-content
                 :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
         >
-<!--            <p>-->
-<!--                <a-form layout="inline" :model="param">-->
-<!--                    <a-form-item>-->
-<!--                        <a-input v-model:value="param.name" placeholder="名称">-->
-<!--                        </a-input>-->
-<!--                    </a-form-item>-->
-<!--                    <a-form-item>-->
-<!--                        <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">-->
-<!--                            查询-->
-<!--                        </a-button>-->
-<!--                    </a-form-item>-->
-<!--                    <a-form-item>-->
-<!--                        <a-button type="primary" @click="add()">-->
-<!--                            新增-->
-<!--                        </a-button>-->
-<!--                    </a-form-item>-->
-<!--                </a-form>-->
-<!--            </p>-->
+            <!--            <p>-->
+            <!--                <a-form layout="inline" :model="param">-->
+            <!--                    <a-form-item>-->
+            <!--                        <a-input v-model:value="param.name" placeholder="名称">-->
+            <!--                        </a-input>-->
+            <!--                    </a-form-item>-->
+            <!--                    <a-form-item>-->
+            <!--                        <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">-->
+            <!--                            查询-->
+            <!--                        </a-button>-->
+            <!--                    </a-form-item>-->
+            <!--                    <a-form-item>-->
+            <!--                        <a-button type="primary" @click="add()">-->
+            <!--                            新增-->
+            <!--                        </a-button>-->
+            <!--                    </a-form-item>-->
+            <!--                </a-form>-->
+            <!--            </p>-->
             <a-table
                     :columns="columns"
                     :row-key="record => record.id"
@@ -37,72 +37,72 @@
                 </template>
                 <template v-slot:action="{ text, record }">
                     <a-space size="small">
-<!--                        <router-link :to="'/admin/doc?ebookId=' + record.id">-->
-<!--                            <a-button type="primary">-->
-<!--                                文档管理-->
-<!--                            </a-button>-->
-<!--                        </router-link>-->
+                        <!--                        <router-link :to="'/admin/doc?ebookId=' + record.id">-->
+                        <!--                            <a-button type="primary">-->
+                        <!--                                文档管理-->
+                        <!--                            </a-button>-->
+                        <!--                        </router-link>-->
                         <a-button type="primary" @click="edit(record)">
                             编辑
                         </a-button>
-<!--                        <a-popconfirm-->
-<!--                                title="删除后不可恢复，确认删除?"-->
-<!--                                ok-text="是"-->
-<!--                                cancel-text="否"-->
-<!--                                @confirm="handleDelete(record.id)"-->
-<!--                        >-->
-                            <a-button type="danger">
-                                删除
-                            </a-button>
-<!--                        </a-popconfirm>-->
+                        <!--                        <a-popconfirm-->
+                        <!--                                title="删除后不可恢复，确认删除?"-->
+                        <!--                                ok-text="是"-->
+                        <!--                                cancel-text="否"-->
+                        <!--                                @confirm="handleDelete(record.id)"-->
+                        <!--                        >-->
+                        <a-button type="danger">
+                            删除
+                        </a-button>
+                        <!--                        </a-popconfirm>-->
                     </a-space>
                 </template>
             </a-table>
         </a-layout-content>
     </a-layout>
 
-<!--    <a-modal-->
-<!--            title="电子书表单"-->
-<!--            v-model:visible="modalVisible"-->
-<!--            :confirm-loading="modalLoading"-->
-<!--            @ok="handleModalOk"-->
-<!--    >-->
-<!--        <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">-->
-<!--            <a-form-item label="封面">-->
-<!--                <a-input v-model:value="ebook.cover"/>-->
-<!--                <a-upload-->
-<!--                        v-model:file-list="fileList"-->
-<!--                        name="avatar"-->
-<!--                        list-type="picture-card"-->
-<!--                        class="avatar-uploader"-->
-<!--                        :show-upload-list="false"-->
-<!--                        :action="SERVER + '/ebook/upload/avatar'"-->
-<!--                        :before-upload="beforeUpload"-->
-<!--                        @change="handleChange"-->
-<!--                >-->
-<!--                    <img v-if="imageUrl" :src="imageUrl" alt="avatar"/>-->
-<!--                    <div v-else>-->
-<!--                        <loading-outlined v-if="coverLoading"></loading-outlined>-->
-<!--                        <plus-outlined v-else></plus-outlined>-->
-<!--                        <div class="ant-upload-text">Upload</div>-->
-<!--                    </div>-->
-<!--                </a-upload>-->
-<!--            </a-form-item>-->
-<!--            <a-form-item label="名称">-->
-<!--                <a-input v-model:value="ebook.name"/>-->
-<!--            </a-form-item>-->
-<!--            <a-form-item label="分类">-->
-<!--                <a-cascader-->
-<!--                        v-model:value="categoryIds"-->
-<!--                        :field-names="{ label: 'name', value: 'id', children: 'children' }"-->
-<!--                        :options="level1"-->
-<!--                />-->
-<!--            </a-form-item>-->
-<!--            <a-form-item label="描述">-->
-<!--                <a-input v-model:value="ebook.description" type="textarea"/>-->
-<!--            </a-form-item>-->
-<!--        </a-form>-->
-<!--    </a-modal>-->
+    <a-modal
+            title="电子书表单"
+            v-model:visible="modalVisible"
+            :confirm-loading="modalLoading"
+            @ok="handleModalOk"
+    >
+        <!--        <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">-->
+        <!--            <a-form-item label="封面">-->
+        <!--                <a-input v-model:value="ebook.cover"/>-->
+        <!--                <a-upload-->
+        <!--                        v-model:file-list="fileList"-->
+        <!--                        name="avatar"-->
+        <!--                        list-type="picture-card"-->
+        <!--                        class="avatar-uploader"-->
+        <!--                        :show-upload-list="false"-->
+        <!--                        :action="SERVER + '/ebook/upload/avatar'"-->
+        <!--                        :before-upload="beforeUpload"-->
+        <!--                        @change="handleChange"-->
+        <!--                >-->
+        <!--                    <img v-if="imageUrl" :src="imageUrl" alt="avatar"/>-->
+        <!--                    <div v-else>-->
+        <!--                        <loading-outlined v-if="coverLoading"></loading-outlined>-->
+        <!--                        <plus-outlined v-else></plus-outlined>-->
+        <!--                        <div class="ant-upload-text">Upload</div>-->
+        <!--                    </div>-->
+        <!--                </a-upload>-->
+        <!--            </a-form-item>-->
+        <!--            <a-form-item label="名称">-->
+        <!--                <a-input v-model:value="ebook.name"/>-->
+        <!--            </a-form-item>-->
+        <!--            <a-form-item label="分类">-->
+        <!--                <a-cascader-->
+        <!--                        v-model:value="categoryIds"-->
+        <!--                        :field-names="{ label: 'name', value: 'id', children: 'children' }"-->
+        <!--                        :options="level1"-->
+        <!--                />-->
+        <!--            </a-form-item>-->
+        <!--            <a-form-item label="描述">-->
+        <!--                <a-input v-model:value="ebook.description" type="textarea"/>-->
+        <!--            </a-form-item>-->
+        <!--        </a-form>-->
+    </a-modal>
 </template>
 
 <script lang="ts">
@@ -183,11 +183,11 @@
                     loading.value = false;
                     const data = response.data;
                     // if (data.success) {
-                        ebooks.value = data.content.list;
+                    ebooks.value = data.content.list;
 
-                        // 重置分页按钮
-                        pagination.value.current = params.page;
-                        pagination.value.total = data.content.total;
+                    // 重置分页按钮
+                    pagination.value.current = params.page;
+                    pagination.value.total = data.content.total;
                     // } else {
                     //     message.error(data.message);
                     // }
@@ -197,53 +197,57 @@
             /**
              * 表格点击页码时触发
              */
-            // 这里page、size之类的参数名字要与被请求接口对应字段一致，否则后端springBoot框架无法自动识别字段并赋值
+                // 这里page、size之类的参数名字要与被请求接口对应字段一致，否则后端springBoot框架无法自动识别字段并赋值
             const handleTableChange = (pagination: any) => {
-                console.log("看看自带的分页参数都什么：" + pagination);
-                handleQuery({
-                    page: pagination.current,
-                    size: pagination.pageSize
-                });
-            };
+                    console.log("看看自带的分页参数都什么：" + pagination);
+                    handleQuery({
+                        page: pagination.current,
+                        size: pagination.pageSize
+                    });
+                };
 
-            // // -------- 表单 ---------
-            // /**
-            //  * 数组，[100, 101]对应：前端开发 / Vue
-            //  */
+            // -------- 表单 ---------
+            /**
+             * 数组，[100, 101]对应：前端开发 / Vue
+             */
             // const categoryIds = ref();
             // const ebook = ref();
-            // const modalVisible = ref(false);
-            // const modalLoading = ref(false);
-            // const handleModalOk = () => {
-            //     modalLoading.value = true;
-            //     ebook.value.category1Id = categoryIds.value[0];
-            //     ebook.value.category2Id = categoryIds.value[1];
-            //     axios.post("/ebook/save", ebook.value).then((response) => {
-            //         modalLoading.value = false;
-            //         const data = response.data; // data = commonResp
-            //         if (data.success) {
-            //             modalVisible.value = false;
-            //
-            //             // 重新加载列表
-            //             handleQuery({
-            //                 page: pagination.value.current,
-            //                 size: pagination.value.pageSize,
-            //             });
-            //         } else {
-            //             message.error(data.message);
-            //         }
-            //     });
-            // };
-            //
-            // /**
-            //  * 编辑
-            //  */
-            // const edit = (record: any) => {
-            //     modalVisible.value = true;
-            //     ebook.value = Tool.copy(record);
-            //     categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
-            // };
-            //
+            const modalVisible = ref(false);
+            const modalLoading = ref(false);
+            const handleModalOk = () => {
+                modalLoading.value = true;
+                // ebook.value.category1Id = categoryIds.value[0];
+                // ebook.value.category2Id = categoryIds.value[1];
+                // axios.post("/ebook/save", ebook.value).then((response) => {
+                //     modalLoading.value = false;
+                //     const data = response.data; // data = commonResp
+                //     if (data.success) {
+                //         modalVisible.value = false;
+                //
+                //         // 重新加载列表
+                //         handleQuery({
+                //             page: pagination.value.current,
+                //             size: pagination.value.pageSize,
+                //         });
+                //     } else {
+                //         message.error(data.message);
+                //     }
+                // });
+                setTimeout(() => {
+                    modalVisible.value = false;
+                    modalLoading.value = false
+                }, 2000)
+            };
+
+            /**
+             * 编辑
+             */
+            const edit = (record: any) => {
+                modalVisible.value = true;
+                // ebook.value = Tool.copy(record);
+                // categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
+            };
+
             // /**
             //  * 新增
             //  */
@@ -362,13 +366,13 @@
                 // handleQuery,
                 // getCategoryName,
                 //
-                // edit,
+                edit,
                 // add,
                 //
                 // ebook,
-                // modalVisible,
-                // modalLoading,
-                // handleModalOk,
+                modalVisible,
+                modalLoading,
+                handleModalOk,
                 // categoryIds,
                 // level1,
                 //
