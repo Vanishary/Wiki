@@ -67,41 +67,45 @@
             :confirm-loading="modalLoading"
             @ok="handleModalOk"
     >
-        <!--        <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">-->
-        <!--            <a-form-item label="封面">-->
-        <!--                <a-input v-model:value="ebook.cover"/>-->
-        <!--                <a-upload-->
-        <!--                        v-model:file-list="fileList"-->
-        <!--                        name="avatar"-->
-        <!--                        list-type="picture-card"-->
-        <!--                        class="avatar-uploader"-->
-        <!--                        :show-upload-list="false"-->
-        <!--                        :action="SERVER + '/ebook/upload/avatar'"-->
-        <!--                        :before-upload="beforeUpload"-->
-        <!--                        @change="handleChange"-->
-        <!--                >-->
-        <!--                    <img v-if="imageUrl" :src="imageUrl" alt="avatar"/>-->
-        <!--                    <div v-else>-->
-        <!--                        <loading-outlined v-if="coverLoading"></loading-outlined>-->
-        <!--                        <plus-outlined v-else></plus-outlined>-->
-        <!--                        <div class="ant-upload-text">Upload</div>-->
-        <!--                    </div>-->
-        <!--                </a-upload>-->
-        <!--            </a-form-item>-->
-        <!--            <a-form-item label="名称">-->
-        <!--                <a-input v-model:value="ebook.name"/>-->
-        <!--            </a-form-item>-->
-        <!--            <a-form-item label="分类">-->
-        <!--                <a-cascader-->
-        <!--                        v-model:value="categoryIds"-->
-        <!--                        :field-names="{ label: 'name', value: 'id', children: 'children' }"-->
-        <!--                        :options="level1"-->
-        <!--                />-->
-        <!--            </a-form-item>-->
-        <!--            <a-form-item label="描述">-->
-        <!--                <a-input v-model:value="ebook.description" type="textarea"/>-->
-        <!--            </a-form-item>-->
-        <!--        </a-form>-->
+        <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+            <a-form-item label="封面">
+                <a-input v-model:value="ebook.cover"/>
+                <!--                <a-upload-->
+                <!--                        v-model:file-list="fileList"-->
+                <!--                        name="avatar"-->
+                <!--                        list-type="picture-card"-->
+                <!--                        class="avatar-uploader"-->
+                <!--                        :show-upload-list="false"-->
+                <!--                        :action="SERVER + '/ebook/upload/avatar'"-->
+                <!--                        :before-upload="beforeUpload"-->
+                <!--                        @change="handleChange"-->
+                <!--                >-->
+                <!--                    <img v-if="imageUrl" :src="imageUrl" alt="avatar"/>-->
+                <!--                    <div v-else>-->
+                <!--                        <loading-outlined v-if="coverLoading"></loading-outlined>-->
+                <!--                        <plus-outlined v-else></plus-outlined>-->
+                <!--                        <div class="ant-upload-text">Upload</div>-->
+                <!--                    </div>-->
+                <!--                </a-upload>-->
+            </a-form-item>
+            <a-form-item label="名称">
+                <a-input v-model:value="ebook.name"/>
+            </a-form-item>
+            <a-form-item label="分类1">
+                <a-input v-model:value="ebook.category1Id"/>
+                <!--                <a-cascader-->
+                <!--                        v-model:value="categoryIds"-->
+                <!--                        :field-names="{ label: 'name', value: 'id', children: 'children' }"-->
+                <!--                        :options="level1"-->
+                <!--                />-->
+            </a-form-item>
+            <a-form-item label="分类">
+                <a-input v-model:value="ebook.category2Id"/>
+            </a-form-item>
+            <a-form-item label="描述">
+                <a-input v-model:value="ebook.descn" type="textarea"/>
+            </a-form-item>
+        </a-form>
     </a-modal>
 </template>
 
@@ -210,8 +214,8 @@
             /**
              * 数组，[100, 101]对应：前端开发 / Vue
              */
-            // const categoryIds = ref();
-            // const ebook = ref();
+                // const categoryIds = ref();
+            const ebook = ref();
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const handleModalOk = () => {
@@ -244,6 +248,7 @@
              */
             const edit = (record: any) => {
                 modalVisible.value = true;
+                ebook.value = record
                 // ebook.value = Tool.copy(record);
                 // categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
             };
@@ -369,7 +374,7 @@
                 edit,
                 // add,
                 //
-                // ebook,
+                ebook,
                 modalVisible,
                 modalLoading,
                 handleModalOk,
