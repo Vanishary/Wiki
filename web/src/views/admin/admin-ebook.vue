@@ -113,7 +113,6 @@
     import {defineComponent, onMounted, ref} from 'vue';
     import axios from 'axios';
     import {message} from 'ant-design-vue';
-    // import {message} from 'ant-design-vue';
     // import {Tool} from "@/util/tool";
 
     // function getBase64(img: Blob, callback: (base64Url: string) => void) {
@@ -189,17 +188,17 @@
                         size: params.size
                     }
                 }).then((response) => {
-                    loading.value = false;
-                    const data = response.data;
-                    // if (data.success) {
-                    ebooks.value = data.content.list;
+                        loading.value = false;
+                        const data = response.data;
+                    if (data.success) {
+                        ebooks.value = data.content.list;
 
-                    // 重置分页按钮
-                    pagination.value.current = params.page;
-                    pagination.value.total = data.content.total;
-                    // } else {
-                    //     message.error(data.message);
-                    // }
+                        // 重置分页按钮
+                        pagination.value.current = params.page;
+                        pagination.value.total = data.content.total;
+                    } else {
+                        message.error(data.message);
+                    }
                 });
             };
 

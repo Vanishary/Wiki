@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @Author: Guotao Li
@@ -27,7 +28,7 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookQueryReq ebookQueryReq) {
+    public CommonResp list(@Valid EbookQueryReq ebookQueryReq) {
         CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         PageResp<EbookQueryResp> pageResp = ebookService.list(ebookQueryReq);
         resp.setContent(pageResp);
