@@ -205,7 +205,7 @@
             /**
              * 表格点击页码时触发
              */
-                // 这里page、size之类的参数名字要与被请求接口对应字段一致，否则后端springBoot框架无法自动识别字段并赋值
+            // 这里page、size之类的参数名字要与被请求接口对应字段一致，否则后端springBoot框架无法自动识别字段并赋值
             const handleTableChange = (pagination: any) => {
                     console.log("看看自带的分页参数都什么：" + pagination);
                     handleQuery({
@@ -216,9 +216,9 @@
 
             // -------- 表单 ---------
             /**
-             * 数组，[100, 101]对应：前端开发 / Vue
-             */
-                // const categoryIds = ref();
+             * 数据保存
+             **/
+            // const categoryIds = ref();
             const ebook = ref();
             const modalVisible = ref(false);
             const modalLoading = ref(false);
@@ -227,6 +227,8 @@
                 // ebook.value.category1Id = categoryIds.value[0];
                 // ebook.value.category2Id = categoryIds.value[1];
                 axios.post("/ebook/save", ebook.value).then((response) => {
+                    // 只要后端又返回则不需loading效果
+                    modalLoading.value = false;
                     const data = response.data; // data = commonResp
                     if (data.success) {
                         modalVisible.value = false;
