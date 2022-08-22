@@ -1,25 +1,22 @@
 <template>
     <a-layout>
-        <a-layout-content
-                :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
-        >
+        <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
             <p>
-                <!--                            <a-form layout="inline" :model="param">-->
-                <!--                                <a-form-item>-->
-                <!--                                    <a-input v-model:value="param.name" placeholder="名称">-->
-                <!--                                    </a-input>-->
-                <!--                                </a-form-item>-->
-                <!--                                <a-form-item>-->
-                <!--                                    <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">-->
-                <!--                                        查询-->
-                <!--                                    </a-button>-->
-                <!--                                </a-form-item>-->
-                <!--                                <a-form-item>-->
-                <a-button type="primary" @click="add()">
-                    新增
-                </a-button>
-                <!--                                </a-form-item>-->
-                <!--                            </a-form>-->
+                <a-form layout="inline" :model="param">
+                    <a-form-item>
+                        <a-input v-model:value="param.name" placeholder="名称"/>
+                    </a-form-item>
+                    <a-form-item>
+                        <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">
+                            查询
+                        </a-button>
+                    </a-form-item>
+                    <a-form-item>
+                        <a-button type="primary" @click="add()">
+                            新增
+                        </a-button>
+                    </a-form-item>
+                </a-form>
             </p>
             <a-table
                     :columns="columns"
@@ -124,8 +121,8 @@
     export default defineComponent({
         name: 'AdminEbook',
         setup() {
-            // const param = ref();
-            // param.value = {};
+            const param = ref();
+            param.value = {};
             const ebooks = ref();
             const pagination = ref({
                 current: 1,
@@ -185,11 +182,12 @@
                 axios.get("/ebook/list", {
                     params: {
                         page: params.page,
-                        size: params.size
+                        size: params.size,
+                        name: param.value.name
                     }
                 }).then((response) => {
-                        loading.value = false;
-                        const data = response.data;
+                    loading.value = false;
+                    const data = response.data;
                     if (data.success) {
                         ebooks.value = data.content.list;
 
@@ -205,7 +203,7 @@
             /**
              * 表格点击页码时触发
              */
-            // 这里page、size之类的参数名字要与被请求接口对应字段一致，否则后端springBoot框架无法自动识别字段并赋值
+                // 这里page、size之类的参数名字要与被请求接口对应字段一致，否则后端springBoot框架无法自动识别字段并赋值
             const handleTableChange = (pagination: any) => {
                     console.log("看看自带的分页参数都什么：" + pagination);
                     handleQuery({
@@ -218,7 +216,7 @@
             /**
              * 数据保存
              **/
-            // const categoryIds = ref();
+                // const categoryIds = ref();
             const ebook = ref();
             const modalVisible = ref(false);
             const modalLoading = ref(false);
@@ -362,13 +360,13 @@
             });
 
             return {
-                // param,
+                param,
                 ebooks,
                 pagination,
                 columns,
                 loading,
                 handleTableChange,
-                // handleQuery,
+                handleQuery,
                 // getCategoryName,
 
                 edit,
