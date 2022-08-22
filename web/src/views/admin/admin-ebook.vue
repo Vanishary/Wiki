@@ -3,24 +3,24 @@
         <a-layout-content
                 :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
         >
-                        <p>
-<!--                            <a-form layout="inline" :model="param">-->
-<!--                                <a-form-item>-->
-<!--                                    <a-input v-model:value="param.name" placeholder="名称">-->
-<!--                                    </a-input>-->
-<!--                                </a-form-item>-->
-<!--                                <a-form-item>-->
-<!--                                    <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">-->
-<!--                                        查询-->
-<!--                                    </a-button>-->
-<!--                                </a-form-item>-->
-<!--                                <a-form-item>-->
-                                    <a-button type="primary" @click="add()">
-                                        新增
-                                    </a-button>
-<!--                                </a-form-item>-->
-<!--                            </a-form>-->
-                        </p>
+            <p>
+                <!--                            <a-form layout="inline" :model="param">-->
+                <!--                                <a-form-item>-->
+                <!--                                    <a-input v-model:value="param.name" placeholder="名称">-->
+                <!--                                    </a-input>-->
+                <!--                                </a-form-item>-->
+                <!--                                <a-form-item>-->
+                <!--                                    <a-button type="primary" @click="handleQuery({page: 1, size: pagination.pageSize})">-->
+                <!--                                        查询-->
+                <!--                                    </a-button>-->
+                <!--                                </a-form-item>-->
+                <!--                                <a-form-item>-->
+                <a-button type="primary" @click="add()">
+                    新增
+                </a-button>
+                <!--                                </a-form-item>-->
+                <!--                            </a-form>-->
+            </p>
             <a-table
                     :columns="columns"
                     :row-key="record => record.id"
@@ -37,24 +37,24 @@
                 </template>
                 <template v-slot:action="{ text, record }">
                     <a-space size="small">
-                        <!--                        <router-link :to="'/admin/doc?ebookId=' + record.id">-->
-                        <!--                            <a-button type="primary">-->
-                        <!--                                文档管理-->
-                        <!--                            </a-button>-->
-                        <!--                        </router-link>-->
+                        <router-link :to="'/admin/doc?ebookId=' + record.id">
+                            <a-button type="primary">
+                                文档管理
+                            </a-button>
+                        </router-link>
                         <a-button type="primary" @click="edit(record)">
                             编辑
                         </a-button>
-                        <!--                        <a-popconfirm-->
-                        <!--                                title="删除后不可恢复，确认删除?"-->
-                        <!--                                ok-text="是"-->
-                        <!--                                cancel-text="否"-->
-                        <!--                                @confirm="handleDelete(record.id)"-->
-                        <!--                        >-->
-                        <a-button type="danger">
-                            删除
-                        </a-button>
-                        <!--                        </a-popconfirm>-->
+                        <a-popconfirm
+                                title="删除后不可恢复，确认删除?"
+                                ok-text="是"
+                                cancel-text="否"
+                                @confirm="handleDelete(record.id)"
+                        >
+                            <a-button type="danger">
+                                删除
+                            </a-button>
+                        </a-popconfirm>
                     </a-space>
                 </template>
             </a-table>
@@ -103,7 +103,7 @@
                 <a-input v-model:value="ebook.category2Id"/>
             </a-form-item>
             <a-form-item label="描述">
-                <a-input v-model:value="ebook.descn" type="textarea"/>
+                <a-input v-model:value="ebook.description" type="textarea"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -112,7 +112,7 @@
 <script lang="ts">
     import {defineComponent, onMounted, ref} from 'vue';
     import axios from 'axios';
-    import { message } from 'ant-design-vue';
+    import {message} from 'ant-design-vue';
     // import {message} from 'ant-design-vue';
     // import {Tool} from "@/util/tool";
 
@@ -260,21 +260,21 @@
                 ebook.value = {};
             };
 
-            // const handleDelete = (id: number) => {
-            //     axios.delete("/ebook/delete/" + id).then((response) => {
-            //         const data = response.data; // data = commonResp
-            //         if (data.success) {
-            //             // 重新加载列表
-            //             handleQuery({
-            //                 page: pagination.value.current,
-            //                 size: pagination.value.pageSize,
-            //             });
-            //         } else {
-            //             message.error(data.message);
-            //         }
-            //     });
-            // };
-            //
+            const handleDelete = (id: number) => {
+                axios.delete("/ebook/delete/" + id).then((response) => {
+                    const data = response.data; // data = commonResp
+                    if (data.success) {
+                        // 重新加载列表
+                        handleQuery({
+                            page: pagination.value.current,
+                            size: pagination.value.pageSize,
+                        });
+                    } else {
+                        message.error(data.message);
+                    }
+                });
+            };
+
             // const level1 = ref();
             // let categorys: any;
             // /**
@@ -380,7 +380,7 @@
                 // category1Id,
                 // category2Id,
                 // level1,
-                // handleDelete,
+                handleDelete,
                 // fileList,
                 // coverLoading,
                 // imageUrl,

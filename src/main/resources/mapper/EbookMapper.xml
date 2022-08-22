@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, category1Id, category2Id, description, cover, doc_count, view_count, 
+    id, `name`, category1Id, category2Id, description, cover, doc_count, view_count,
     vote_count
   </sql>
   <select id="selectByExample" parameterType="com.epra.wiki.domain.EbookExample" resultMap="BaseResultMap">
@@ -89,7 +89,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from ebook
     where id = #{id,jdbcType=BIGINT}
@@ -109,8 +109,8 @@
       category2Id, description, cover,
       doc_count, view_count, vote_count
       )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{category1Id,jdbcType=BIGINT}, 
-      #{category2Id,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{category1Id,jdbcType=BIGINT},
+      #{category2Id,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR},
       #{docCount,jdbcType=INTEGER}, #{viewCount,jdbcType=INTEGER}, #{voteCount,jdbcType=INTEGER}
       )
   </insert>
