@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.epra.wiki.domain.Ebook">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="category1_id" jdbcType="BIGINT" property="category1Id" />
-    <result column="category2_id" jdbcType="BIGINT" property="category2Id" />
+    <result column="category1Id" jdbcType="BIGINT" property="category1Id" />
+    <result column="category2Id" jdbcType="BIGINT" property="category2Id" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="cover" jdbcType="VARCHAR" property="cover" />
     <result column="doc_count" jdbcType="INTEGER" property="docCount" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, category1_id, category2_id, description, cover, doc_count, view_count, 
+    id, `name`, category1Id, category2Id, description, cover, doc_count, view_count, 
     vote_count
   </sql>
   <select id="selectByExample" parameterType="com.epra.wiki.domain.EbookExample" resultMap="BaseResultMap">
@@ -105,8 +105,8 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.epra.wiki.domain.Ebook">
-    insert into ebook (id, `name`, category1_id, 
-      category2_id, description, cover, 
+    insert into ebook (id, `name`, category1Id,
+      category2Id, description, cover,
       doc_count, view_count, vote_count
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{category1Id,jdbcType=BIGINT}, 
@@ -124,10 +124,10 @@
         `name`,
       </if>
       <if test="category1Id != null">
-        category1_id,
+        category1Id,
       </if>
       <if test="category2Id != null">
-        category2_id,
+        category2Id,
       </if>
       <if test="description != null">
         description,
@@ -191,10 +191,10 @@
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.category1Id != null">
-        category1_id = #{record.category1Id,jdbcType=BIGINT},
+        category1Id = #{record.category1Id,jdbcType=BIGINT},
       </if>
       <if test="record.category2Id != null">
-        category2_id = #{record.category2Id,jdbcType=BIGINT},
+        category2Id = #{record.category2Id,jdbcType=BIGINT},
       </if>
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
@@ -220,8 +220,8 @@
     update ebook
     set id = #{record.id,jdbcType=BIGINT},
       `name` = #{record.name,jdbcType=VARCHAR},
-      category1_id = #{record.category1Id,jdbcType=BIGINT},
-      category2_id = #{record.category2Id,jdbcType=BIGINT},
+      category1Id = #{record.category1Id,jdbcType=BIGINT},
+      category2Id = #{record.category2Id,jdbcType=BIGINT},
       description = #{record.description,jdbcType=VARCHAR},
       cover = #{record.cover,jdbcType=VARCHAR},
       doc_count = #{record.docCount,jdbcType=INTEGER},
@@ -238,10 +238,10 @@
         `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="category1Id != null">
-        category1_id = #{category1Id,jdbcType=BIGINT},
+        category1Id = #{category1Id,jdbcType=BIGINT},
       </if>
       <if test="category2Id != null">
-        category2_id = #{category2Id,jdbcType=BIGINT},
+        category2Id = #{category2Id,jdbcType=BIGINT},
       </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
@@ -264,8 +264,8 @@
   <update id="updateByPrimaryKey" parameterType="com.epra.wiki.domain.Ebook">
     update ebook
     set `name` = #{name,jdbcType=VARCHAR},
-      category1_id = #{category1Id,jdbcType=BIGINT},
-      category2_id = #{category2Id,jdbcType=BIGINT},
+      category1Id = #{category1Id,jdbcType=BIGINT},
+      category2Id = #{category2Id,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
       cover = #{cover,jdbcType=VARCHAR},
       doc_count = #{docCount,jdbcType=INTEGER},

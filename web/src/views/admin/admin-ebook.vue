@@ -112,6 +112,7 @@
 <script lang="ts">
     import {defineComponent, onMounted, ref} from 'vue';
     import axios from 'axios';
+    import { message } from 'ant-design-vue';
     // import {message} from 'ant-design-vue';
     // import {Tool} from "@/util/tool";
 
@@ -146,10 +147,14 @@
                 },
                 {
                     title: '分类1',
+                    key: 'category1Id',
+                    dataIndex: 'category1Id',
                     slots: {customRender: 'category1Id'}
                 },
                 {
                     title: '分类2',
+                    key: 'category2Id',
+                    dataIndex: 'category2Id',
                     slots: {customRender: 'category2Id'}
                 },
                 {
@@ -222,25 +227,19 @@
                 modalLoading.value = true;
                 // ebook.value.category1Id = categoryIds.value[0];
                 // ebook.value.category2Id = categoryIds.value[1];
-                // axios.post("/ebook/save", ebook.value).then((response) => {
-                //     modalLoading.value = false;
-                //     const data = response.data; // data = commonResp
-                //     if (data.success) {
-                //         modalVisible.value = false;
-                //
-                //         // 重新加载列表
-                //         handleQuery({
-                //             page: pagination.value.current,
-                //             size: pagination.value.pageSize,
-                //         });
-                //     } else {
-                //         message.error(data.message);
-                //     }
-                // });
-                setTimeout(() => {
-                    modalVisible.value = false;
-                    modalLoading.value = false
-                }, 2000)
+                axios.post("/ebook/save", ebook.value).then((response) => {
+                    const data = response.data; // data = commonResp
+                    if (data.success) {
+                        modalVisible.value = false;
+                        // 重新加载列表
+                        handleQuery({
+                            page: pagination.value.current,
+                            size: pagination.value.pageSize,
+                        });
+                    } else {
+                        message.error(data.message);
+                    }
+                });
             };
 
             /**
@@ -370,19 +369,16 @@
                 handleTableChange,
                 // handleQuery,
                 // getCategoryName,
-                //
                 edit,
                 // add,
-                //
                 ebook,
                 modalVisible,
                 modalLoading,
                 handleModalOk,
-                // categoryIds,
+                // category1Id,
+                // category2Id,
                 // level1,
-                //
                 // handleDelete,
-                //
                 // fileList,
                 // coverLoading,
                 // imageUrl,

@@ -1,15 +1,14 @@
 package com.epra.wiki.controller;
 
-import com.epra.wiki.req.EbookReq;
+import com.epra.wiki.req.EbookQueryReq;
+import com.epra.wiki.req.EbookSaveReq;
 import com.epra.wiki.resp.CommonResp;
-import com.epra.wiki.resp.EbookResp;
+import com.epra.wiki.resp.EbookQueryResp;
 import com.epra.wiki.resp.PageResp;
 import com.epra.wiki.service.EbookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -28,10 +27,17 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookReq ebookReq) {
-        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
-        PageResp<EbookResp> pageResp = ebookService.list(ebookReq);
+    public CommonResp list(EbookQueryReq ebookQueryReq) {
+        CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
+        PageResp<EbookQueryResp> pageResp = ebookService.list(ebookQueryReq);
         resp.setContent(pageResp);
+        return resp;
+    }
+
+    @PostMapping("/save")
+    public CommonResp save(@RequestBody EbookSaveReq ebookReq) {
+        CommonResp resp = new CommonResp<>();
+        ebookService.save(ebookReq);
         return resp;
     }
 }
