@@ -38,7 +38,11 @@ public class CategoryService {
     public PageResp<CategoryQueryResp> list(CategoryQueryReq categoryQueryReq) {
 
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        if (!ObjectUtils.isEmpty(categoryQueryReq.getName())) {
+            criteria.andNameLike("%" + categoryQueryReq.getName() + "%");
+        }
 
         PageHelper.startPage(categoryQueryReq.getPage(), categoryQueryReq.getSize());
         List<Category> categorysList = categoryMapper.selectByExample(categoryExample);
@@ -47,14 +51,6 @@ public class CategoryService {
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数:{}", pageInfo.getPages());
 
-//        List<CategoryResp> respList = new ArrayList<>();
-//        for (Category category : categorysList) {
-////            CategoryResp categoryResp = new CategoryResp();
-////            BeanUtils.copyProperties(category, categoryResp);
-//            CategoryResp categoryResp = CopyUtil.copy(category, CategoryResp.class);
-//            respList.add(categoryResp);
-//        }
-
         List<CategoryQueryResp> respList = CopyUtil.copyList(categorysList, CategoryQueryResp.class);
 
         PageResp<CategoryQueryResp> pageResp = new PageResp<>();
@@ -62,6 +58,25 @@ public class CategoryService {
         pageResp.setList(respList);
 
         return pageResp;
+    }
+
+    /**
+     * 查询全表
+     * @param
+     * @return
+     */
+    public List<CategoryQueryResp> all() {
+
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+
+//        PageHelper.startPage(categoryQueryReq.getPage(), categoryQueryReq.getSize());
+        List<Category> categorysList = categoryMapper.selectByExample(categoryExample);
+
+        List<CategoryQueryResp> respList = CopyUtil.copyList(categorysList, CategoryQueryResp.class);
+
+        return respList;
     }
 
     /**

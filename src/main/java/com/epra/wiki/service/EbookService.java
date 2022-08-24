@@ -50,14 +50,6 @@ public class EbookService {
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数:{}", pageInfo.getPages());
 
-//        List<EbookResp> respList = new ArrayList<>();
-//        for (Ebook ebook : ebooksList) {
-////            EbookResp ebookResp = new EbookResp();
-////            BeanUtils.copyProperties(ebook, ebookResp);
-//            EbookResp ebookResp = CopyUtil.copy(ebook, EbookResp.class);
-//            respList.add(ebookResp);
-//        }
-
         List<EbookQueryResp> respList = CopyUtil.copyList(ebooksList, EbookQueryResp.class);
 
         PageResp<EbookQueryResp> pageResp = new PageResp<>();
