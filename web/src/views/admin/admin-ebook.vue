@@ -142,17 +142,17 @@
                     dataIndex: 'name'
                 },
                 {
-                    title: '分类1',
-                    key: 'category1Id',
-                    dataIndex: 'category1Id',
-                    slots: {customRender: 'category1Id'}
+                    title: '分类',
+                    // key: 'category1Id',
+                    // dataIndex: 'category',
+                    slots: {customRender: 'category'}
                 },
-                {
-                    title: '分类2',
-                    key: 'category2Id',
-                    dataIndex: 'category2Id',
-                    slots: {customRender: 'category2Id'}
-                },
+                // {
+                //     title: '分类2',
+                //     key: 'category2Id',
+                //     dataIndex: 'category2Id',
+                //     slots: {customRender: 'category2Id'}
+                // },
                 {
                     title: '文档数',
                     dataIndex: 'docCount'
@@ -302,18 +302,18 @@
                 });
             };
 
-            // const getCategoryName = (cid: number) => {
-            //     // console.log(cid)
-            //     let result = "";
-            //     categorys.forEach((item: any) => {
-            //         if (item.id === cid) {
-            //             // return item.name; // 注意，这里直接return不起作用
-            //             result = item.name;
-            //         }
-            //     });
-            //     return result;
-            // };
-            //
+            const getCategoryName = (cid: number) => {
+                // console.log(cid)
+                let result = "";
+                categorys.forEach((item: any) => {
+                    if (item.id === cid) {
+                        // return item.name; // 注意，这里直接return不起作用
+                        result = item.name;
+                    }
+                });
+                return result;
+            };
+
             // const SERVER = process.env.VUE_APP_SERVER;
             // const fileList = ref([]);
             // const coverLoading = ref<boolean>(false);
@@ -367,7 +367,7 @@
                 loading,
                 handleTableChange,
                 handleQuery,
-                // getCategoryName,
+                getCategoryName,
 
                 edit,
                 add,
@@ -376,7 +376,6 @@
                 modalVisible,
                 modalLoading,
                 handleModalOk,
-                // category1Id,
                 categoryIds,
                 level1,
                 handleDelete,
