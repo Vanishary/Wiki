@@ -108,33 +108,39 @@
 
 
             const isShowWelcome = ref(true);
-            const handleClick = (value: any) => {
-                console.log("menu click")
-                // if (value.key === 'welcome') {
-                //     isShowWelcome.value = true;
-                // } else {
-                //     categoryId2 = value.key;
-                //     isShowWelcome.value = false;
-                //     handleQueryEbook();
-                // }
-                isShowWelcome.value = value.key === 'welcome';
-            };
+            let category2Id = 0;
 
-            onMounted(() => {
-                // onMounted()中写入需要初始化的内容，如果直接写在setup()中可能界面还未初始化完成便为某个元素设置值会报错
-                // XXX:首页后端查询接口后期更新为单独的接口/ebook/all，不用使用分页查询
-
-                handleQueryCategory();
+            const handleQueryEbook = () => {
                 axios.get("/ebook/list", {
                     params: {
                         page: 1,
-                        size: 1000
+                        size: 1000,
+                        category2Id: category2Id
                     }
                 }).then((response) => {
                     const data = response.data;
                     ebooks.value = data.content.list
                     // ebooks1.books = data.content
                 });
+            };
+
+            const handleClick = (value: any) => {
+                console.log("menu click")
+                if (value.key === 'welcome') {
+                    isShowWelcome.value = true;
+                } else {
+                    category2Id = value.key;
+                    isShowWelcome.value = false;
+                    handleQueryEbook();
+                }
+                // isShowWelcome.value = value.key === 'welcome';
+            };
+
+            onMounted(() => {
+                // onMounted()中写入需要初始化的内容，如果直接写在setup()中可能界面还未初始化完成便为某个元素设置值会报错
+                // XXX:首页后端查询接口后期更新为单独的接口/ebook/all，不用使用分页查询
+                handleQueryCategory();
+                // handleQueryEbook();
             });
 
             return {
@@ -172,7 +178,7 @@
         margin: 5px 0;
     }
 
-    .ant-layout-sider {
-        float: left;
-    }
+    /*.ant-layout-sider {*/
+    /*    float: left;*/
+    /*}*/
 </style>
