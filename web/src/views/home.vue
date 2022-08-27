@@ -7,23 +7,26 @@
                     @click="handleClick"
             >
                 <a-menu-item key="welcome">
-                    <router-link :to="'/'">
-                        <MailOutlined />
-                        <span>欢迎</span>
-                    </router-link>
+                    <MailOutlined/>
+                    <span>欢迎</span>
                 </a-menu-item>
                 <a-sub-menu v-for="item in level1" :key="item.id">
                     <template v-slot:title>
-                        <span><user-outlined />{{item.name}}</span>
+                        <span><user-outlined/>{{item.name}}</span>
                     </template>
                     <a-menu-item v-for="child in item.children" :key="child.id">
-                        <MailOutlined /><span>{{child.name}}</span>
+                        <MailOutlined/>
+                        <span>{{child.name}}</span>
                     </a-menu-item>
                 </a-sub-menu>
             </a-menu>
         </a-layout-sider>
         <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
-            <a-list item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3}" :data-source="ebooks">
+            <div class="welcome" v-show="isShowWelcome">
+                <h1>欢迎使用Epra Wiki</h1>
+            </div>
+            <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3}"
+                    :data-source="ebooks">
                 <template #renderItem="{ item }">
                     <a-list-item key="item.name">
                         <template #actions>
@@ -43,9 +46,6 @@
                     </a-list-item>
                 </template>
             </a-list>
-
-            <!--            <pre>{{ebooks}}</pre>-->
-            <!--            <pre>{{any_name}}</pre>-->
         </a-layout-content>
     </a-layout>
 </template>
@@ -79,7 +79,7 @@
             const ebooks = ref();
             // const ebooks1 = reactive({books: []});
 
-            const level1 =  ref();
+            const level1 = ref();
             let categorys: any;
             /**
              * 查询所有分类
@@ -91,7 +91,7 @@
                         categorys = data.content;
                         console.log("原始数组：", categorys);
 
-                        // // 加载完分类后，将侧边栏全部展开
+                        // 加载完分类后，将侧边栏全部展开
                         // openKeys.value = [];
                         // for (let i = 0; i < categorys.length; i++) {
                         //     openKeys.value.push(categorys[i].id)
@@ -106,7 +106,9 @@
                 });
             };
 
-            const handleClick = () => {
+
+            const isShowWelcome = ref(true);
+            const handleClick = (value: any) => {
                 console.log("menu click")
                 // if (value.key === 'welcome') {
                 //     isShowWelcome.value = true;
@@ -115,7 +117,7 @@
                 //     isShowWelcome.value = false;
                 //     handleQueryEbook();
                 // }
-                // isShowWelcome.value = value.key === 'welcome';
+                isShowWelcome.value = value.key === 'welcome';
             };
 
             onMounted(() => {
@@ -154,6 +156,8 @@
 
                 handleClick,
                 level1,
+
+                isShowWelcome,
             }
         }
     });
@@ -167,6 +171,7 @@
         border-radius: 8%;
         margin: 5px 0;
     }
+
     .ant-layout-sider {
         float: left;
     }
