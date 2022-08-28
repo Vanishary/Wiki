@@ -1,9 +1,10 @@
 <template>
     <a-layout id="components-layout-demo-top-side-2">
         <the-header></the-header>
-        <div id="v-content" v-bind:style="{minHeight: Height+'px'}"><router-view /></div>
-<!--        <router-view/>-->
-        <the-footer id="the-footer-mode"></the-footer>
+<!--        <div id="v-content" v-bind:style="{minHeight: Height+'px'}"><router-view /></div>-->
+        <router-view/>
+        <the-footer></the-footer>
+<!--        <the-footer id="the-footer-mode"></the-footer>-->
     </a-layout>
 </template>
 
@@ -33,15 +34,15 @@
 
 </script>
 
-<!--<style>-->
-<!--    #components-layout-demo-top-side-2 .logo {-->
-<!--        float: left;-->
-<!--        width: 120px;-->
-<!--        height: 31px;-->
-<!--        margin: 16px 28px 16px 0;-->
-<!--        background: rgba(255, 255, 255, 0.2);-->
-<!--    }-->
-<!--    .footer {-->
-<!--        flex: 0;-->
-<!--    }-->
-<!--</style>-->
+<style>
+    #components-layout-demo-top-side-2 .logo {
+        float: left;
+        width: 120px;
+        height: 31px;
+        margin: 16px 28px 16px 0;
+        background: rgba(255, 255, 255, 0.2);
+    }
+    /*.footer {*/
+    /*    flex: 0;*/
+    /*}*/
+</style>

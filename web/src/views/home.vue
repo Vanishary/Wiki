@@ -177,8 +177,9 @@
         border-radius: 8%;
         margin: 5px 0;
     }
-
-    /*.ant-layout-sider {*/
-    /*    float: left;*/
-    /*}*/
+    .ant-layout-sider {
+        float: left;
+    }
 </style>
+
+
