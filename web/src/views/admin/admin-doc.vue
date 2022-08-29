@@ -71,32 +71,24 @@
                 >
                 </a-tree-select>
             </a-form-item>
-            <!--            <a-form-item label="父文档">-->
-            <!--                <a-select-->
-            <!--                        v-model:value="doc.parent"-->
-            <!--                        ref="select"-->
-            <!--                >-->
-            <!--                    <a-select-option value="0">-->
-            <!--                        无-->
-            <!--                    </a-select-option>-->
-            <!--                    <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="doc.id === c.id">-->
-            <!--                        {{c.name}}-->
-            <!--                    </a-select-option>-->
-            <!--                </a-select>-->
-            <!--            </a-form-item>-->
             <a-form-item label="顺序">
                 <a-input v-model:value="doc.sort"/>
+            </a-form-item>
+            <a-form-item label="内容">
+                <div id="content"></div>
             </a-form-item>
         </a-form>
     </a-modal>
 </template>
 
 <script lang="ts">
-    import {defineComponent, onMounted, ref} from 'vue';
+    import {defineComponent, onMounted, ref, createVNode} from 'vue';
     import axios from 'axios';
-    import {message} from 'ant-design-vue';
+    import {message, Modal} from 'ant-design-vue';
     import {Tool} from "@/util/tool";
     import {useRoute} from "vue-router";
+    import ExclamationCircleOutlined from "@ant-design/icons-vue/ExclamationCircleOutlined";
+    import E from 'wangeditor'
 
     // function getBase64(img: Blob, callback: (base64Url: string) => void) {
     //     const reader = new FileReader();
@@ -177,6 +169,8 @@
             const doc = ref();
             const modalVisible = ref(false);
             const modalLoading = ref(false);
+            const editor = new E('#content');
+
             const handleModalOk = () => {
                 modalLoading.value = true;
                 // doc.value.doc1Id = docIds.value[0];
@@ -227,7 +221,8 @@
                 }
             };
 
-            const ids: Array<string> = [];
+            const deleteIds: Array<string> = [];
+            const deleteNames: Array<string> = [];
             /**
              * 查找整根树枝
              */
@@ -241,7 +236,8 @@
                         console.log("delete", node);
                         // 将目标ID放入结果集ids
                         // node.disabled = true;
-                        ids.push(id);
+                        deleteIds.push(id);
+                        deleteNames.push(node.name);
                         // 遍历所有子节点
                         const children = node.children;
                         if (Tool.isNotEmpty(children)) {
@@ -271,6 +267,9 @@
                 setDisable(treeSelectData.value, record.id);
                 // 为选择树添加一个"无"
                 treeSelectData.value.unshift({id: 0, name: '无'});
+                setTimeout(function () {
+                    editor.create();
+                }, 100);
             };
 
             /**
@@ -284,19 +283,31 @@
 
                 treeSelectData.value = Tool.copy(level1.value);
                 treeSelectData.value.unshift({id: 0, name: '无'});
+                setTimeout(function () {
+                    editor.create();
+                }, 100);
             };
 
             const handleDelete = (id: number) => {
+                // 清空数组，否则多次删除时，数组会一直增加
+                deleteIds.length = 0;
+                deleteNames.length = 0;
                 getDeleteIds(level1.value, id);
                 // console.log(ids)
-                axios.delete("/doc/delete/" + ids.join(",")).then((response) => {
-                    const data = response.data; // data = commonResp
-                    if (data.success) {
-                        // 重新加载列表
-                        handleQuery();
-                    } else {
-                        message.error(data.message);
-                    }
+                Modal.confirm({
+                    title: '重要提醒',
+                    icon: createVNode(ExclamationCircleOutlined),
+                    content: '将删除：【' + deleteNames.join("，") + "】删除后不可恢复，确认删除？",
+                    onOk() {
+                        // console.log(ids)
+                        axios.delete("/doc/delete/" + deleteIds.join(",")).then((response) => {
+                            const data = response.data; // data = commonResp
+                            if (data.success) {
+                                // 重新加载列表
+                                handleQuery();
+                            }
+                        });
+                    },
                 });
             };
 
