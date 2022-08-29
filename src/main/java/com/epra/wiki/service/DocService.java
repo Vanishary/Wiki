@@ -40,6 +40,7 @@ public class DocService {
         DocExample docExample = new DocExample();
         docExample.setOrderByClause("sort asc");
         DocExample.Criteria criteria = docExample.createCriteria();
+
         if (!ObjectUtils.isEmpty(docQueryReq.getName())) {
             criteria.andNameLike("%" + docQueryReq.getName() + "%");
         }
@@ -98,13 +99,15 @@ public class DocService {
      * 删除
      */
     public void delete(long id) {
-//        if (!ObjectUtils.isEmpty(id)) {
-            // delete
             docMapper.deleteByPrimaryKey(id);
-//        } else {
-            // 更新
-//            docMapper.updateByPrimaryKey(doc);
-//        }
+    }
+
+    public void delete(List<String> idStr) {
+        DocExample docExample = new DocExample();
+        DocExample.Criteria criteria = docExample.createCriteria();
+        criteria.andIdIn(idStr);
+
+        docMapper.deleteByExample(docExample);
     }
 }
 

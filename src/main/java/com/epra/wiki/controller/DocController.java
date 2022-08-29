@@ -2,16 +2,18 @@ package com.epra.wiki.controller;
 
 import com.epra.wiki.req.DocQueryReq;
 import com.epra.wiki.req.DocSaveReq;
-import com.epra.wiki.resp.DocQueryResp;
 import com.epra.wiki.resp.CommonResp;
+import com.epra.wiki.resp.DocQueryResp;
 import com.epra.wiki.resp.PageResp;
 import com.epra.wiki.service.DocService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,10 +53,13 @@ public class DocController {
         return resp;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public CommonResp delete(@PathVariable long id) {
+    @DeleteMapping("/delete/{idStr}")
+    public CommonResp delete(@PathVariable String idStr) {
         CommonResp resp = new CommonResp<>();
-        docService.delete(id);
+        if (!ObjectUtils.isEmpty(idStr)){
+            List<String> list = Arrays.asList(idStr.split(","));
+            docService.delete(list);
+        }
         return resp;
     }
 }
