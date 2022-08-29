@@ -4,9 +4,6 @@
             <p>
                 <a-form layout="inline" :model="param">
                     <a-form-item>
-                        <a-input v-model:value="param.name" placeholder="名称"/>
-                    </a-form-item>
-                    <a-form-item>
                         <a-button type="primary" @click="handleQuery()">
                             查询
                         </a-button>
@@ -28,8 +25,8 @@
                 <template #cover="{ text: cover }">
                     <img v-if="cover" :src="cover" alt="avatar"/>
                 </template>
-                <template v-slot:category="{ text, record }">
-                    <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
+                <template v-slot:doc="{ text, record }">
+                    <span>{{ getDocName(record.doc1Id) }} / {{ getDocName(record.doc2Id) }}</span>
                 </template>
                 <template v-slot:action="{ text, record }">
                     <a-space size="small">
@@ -53,30 +50,42 @@
     </a-layout>
 
     <a-modal
-            title="分类表单"
+            title="文档表单"
             v-model:visible="modalVisible"
             :confirm-loading="modalLoading"
             @ok="handleModalOk"
     >
-        <a-form :model="category" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+        <a-form :model="doc" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
             <a-form-item label="名称">
-                <a-input v-model:value="category.name"/>
+                <a-input v-model:value="doc.name"/>
             </a-form-item>
-            <a-form-item label="父分类">
-                <a-select
-                        v-model:value="category.parent"
-                        ref="select"
+            <a-form-item label="名称2">
+                <a-tree-select
+                        v-model:value="doc.parent"
+                        style="width: 100%"
+                        :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                        :tree-data="treeSelectData"
+                        placeholder="——请选择父文档——"
+                        tree-default-expand-all
+                        :replaceFields="{title: 'name', key: 'id', value: 'id'}"
                 >
-                    <a-select-option value="0">
-                        无
-                    </a-select-option>
-                    <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="category.id === c.id">
-                        {{c.name}}
-                    </a-select-option>
-                </a-select>
+                </a-tree-select>
             </a-form-item>
+<!--            <a-form-item label="父文档">-->
+<!--                <a-select-->
+<!--                        v-model:value="doc.parent"-->
+<!--                        ref="select"-->
+<!--                >-->
+<!--                    <a-select-option value="0">-->
+<!--                        无-->
+<!--                    </a-select-option>-->
+<!--                    <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="doc.id === c.id">-->
+<!--                        {{c.name}}-->
+<!--                    </a-select-option>-->
+<!--                </a-select>-->
+<!--            </a-form-item>-->
             <a-form-item label="顺序">
-                <a-input v-model:value="category.sort"/>
+                <a-input v-model:value="doc.sort"/>
             </a-form-item>
         </a-form>
     </a-modal>
@@ -95,11 +104,11 @@
     // }
 
     export default defineComponent({
-        name: 'AdminCategory',
+        name: 'AdminDoc',
         setup() {
             const param = ref();
             param.value = {};
-            const categorys = ref();
+            const docs = ref();
             const loading = ref(false);
 
             const columns = [
@@ -108,7 +117,7 @@
                     dataIndex: 'name'
                 },
                 {
-                    title: '父分类',
+                    title: '父文档',
                     key: 'parent',
                     dataIndex: 'parent',
                 },
@@ -124,7 +133,7 @@
             ];
 
             /**
-             * 一级分类树，children属性就是二级分类
+             * 一级文档树，children属性就是二级文档
              * [{
              *   id: "",
              *   name: "",
@@ -142,14 +151,14 @@
             const handleQuery = () => {
                 loading.value = true;
                 level1.value = []
-                axios.get("/category/all").then((response) => {
+                axios.get("/doc/all").then((response) => {
                     loading.value = false;
                     const data = response.data;
                     if (data.success) {
-                        categorys.value = data.content;
+                        docs.value = data.content;
 
                         level1.value = []
-                        level1.value = Tool.array2Tree(categorys.value, 0);
+                        level1.value = Tool.array2Tree(docs.value, 0);
                     } else {
                         message.error(data.message);
                     }
@@ -160,15 +169,17 @@
             /**
              * 数据保存
              **/
-                // const categoryIds = ref();
-            const category = ref();
+                // const docIds = ref();
+            const treeSelectData = ref();
+            treeSelectData.value = [];
+            const doc = ref();
             const modalVisible = ref(false);
             const modalLoading = ref(false);
             const handleModalOk = () => {
                 modalLoading.value = true;
-                // category.value.category1Id = categoryIds.value[0];
-                // category.value.category2Id = categoryIds.value[1];
-                axios.post("/category/save", category.value).then((response) => {
+                // doc.value.doc1Id = docIds.value[0];
+                // doc.value.doc2Id = docIds.value[1];
+                axios.post("/doc/save", doc.value).then((response) => {
                     // 只要后端又返回则不需loading效果
                     modalLoading.value = false;
                     const data = response.data; // data = commonResp
@@ -182,13 +193,50 @@
                 });
             };
 
+
+            /**
+             * 将某节点及其子孙节点全部置为disabled
+             */
+            const setDisable = (treeSelectData: any, id: any) => {
+                // console.log(treeSelectData, id);
+                // 遍历数组，即遍历某一层节点
+                for (let i = 0; i < treeSelectData.length; i++) {
+                    const node = treeSelectData[i];
+                    if (node.id === id) {
+                        // 如果当前节点就是目标节点
+                        console.log("disabled", node);
+                        // 将目标节点设置为disabled
+                        node.disabled = true;
+
+                        // 遍历所有子节点，将所有子节点全部都加上disabled
+                        const children = node.children;
+                        if (Tool.isNotEmpty(children)) {
+                            for (let j = 0; j < children.length; j++) {
+                                setDisable(children, children[j].id)
+                            }
+                        }
+                    } else {
+                        // 如果当前节点不是目标节点，则到其子节点再找找看。
+                        const children = node.children;
+                        if (Tool.isNotEmpty(children)) {
+                            setDisable(children, id);
+                        }
+                    }
+                }
+            };
+
             /**
              * 编辑
              */
             const edit = (record: any) => {
                 modalVisible.value = true;
-                category.value = Tool.copy(record);
-                // categoryIds.value = [category.value.category1Id, category.value.category2Id]
+                doc.value = Tool.copy(record);
+                // docIds.value = [doc.value.doc1Id, doc.value.doc2Id]
+                // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
+                treeSelectData.value = Tool.copy(level1.value);
+                setDisable(treeSelectData.value, record.id);
+                // 为选择树添加一个"无"
+                treeSelectData.value.unshift({id: 0, name: '无'});
             };
 
             /**
@@ -196,11 +244,14 @@
              */
             const add = () => {
                 modalVisible.value = true;
-                category.value = {};
+                doc.value = {};
+
+                treeSelectData.value = Tool.copy(level1.value);
+                treeSelectData.value.unshift({id: 0, name: '无'});
             };
 
             const handleDelete = (id: number) => {
-                axios.delete("/category/delete/" + id).then((response) => {
+                axios.delete("/doc/delete/" + id).then((response) => {
                     const data = response.data; // data = commonResp
                     if (data.success) {
                         // 重新加载列表
@@ -217,30 +268,23 @@
 
             return {
                 param,
-                // categorys,
+                // docs,
                 level1,
                 columns,
                 loading,
                 handleQuery,
-                // getCategoryName,
+                // getDocName,
 
                 edit,
                 add,
 
-                category,
+                doc,
                 modalVisible,
                 modalLoading,
                 handleModalOk,
-                // category1Id,
-                // category2Id,
-                // level1,
                 handleDelete,
-                // fileList,
-                // coverLoading,
-                // imageUrl,
-                // handleChange,
-                // beforeUpload,
-                // SERVER
+
+                treeSelectData
             }
         }
     });
