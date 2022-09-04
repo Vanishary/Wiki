@@ -1,8 +1,10 @@
 package com.epra.wiki.service;
 
 import com.epra.wiki.controller.DemoController;
+import com.epra.wiki.domain.Content;
 import com.epra.wiki.domain.Doc;
 import com.epra.wiki.domain.DocExample;
+import com.epra.wiki.mapper.ContentMapper;
 import com.epra.wiki.mapper.DocMapper;
 import com.epra.wiki.req.DocQueryReq;
 import com.epra.wiki.req.DocSaveReq;
@@ -31,6 +33,9 @@ public class DocService {
 
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private ContentMapper contentMapper;
 
     @Resource
     private SnowFlake snowFlake;
@@ -63,6 +68,7 @@ public class DocService {
 
     /**
      * 查询全表
+     *
      * @param
      * @return
      */
@@ -84,14 +90,23 @@ public class DocService {
      * 保存
      */
     public void save(DocSaveReq docSaveReq) {
+        // doc.id=content.id
         Doc doc = CopyUtil.copy(docSaveReq, Doc.class);
+        Content content = CopyUtil.copy(docSaveReq, Content.class);
         if (ObjectUtils.isEmpty(doc.getId())) {
             // 新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
+
+            content.setId(doc.getId());
+            contentMapper.insert(content);
         } else {
-            // 更新
+            // 更新   WithBLOBs 表示带大字段
             docMapper.updateByPrimaryKey(doc);
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            if (count == 0) {
+                contentMapper.insert(content);
+            }
         }
     }
 
@@ -99,7 +114,7 @@ public class DocService {
      * 删除
      */
     public void delete(long id) {
-            docMapper.deleteByPrimaryKey(id);
+        docMapper.deleteByPrimaryKey(id);
     }
 
     public void delete(List<String> idStr) {
@@ -108,6 +123,15 @@ public class DocService {
         criteria.andIdIn(idStr);
 
         docMapper.deleteByExample(docExample);
+    }
+
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if (content != null) {
+            return content.getContent();
+        } else {
+            return "";
+        }
     }
 }
 

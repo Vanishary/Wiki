@@ -56,10 +56,18 @@ public class DocController {
     @DeleteMapping("/delete/{idStr}")
     public CommonResp delete(@PathVariable String idStr) {
         CommonResp resp = new CommonResp<>();
-        if (!ObjectUtils.isEmpty(idStr)){
+        if (!ObjectUtils.isEmpty(idStr)) {
             List<String> list = Arrays.asList(idStr.split(","));
             docService.delete(list);
         }
+        return resp;
+    }
+
+    @GetMapping("/find-content/{id}")
+    public CommonResp findContent(@PathVariable Long id) {
+        CommonResp<String> resp = new CommonResp<>();
+        String content = docService.findContent(id);
+        resp.setContent(content);
         return resp;
     }
 }
