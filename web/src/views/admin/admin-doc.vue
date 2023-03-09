@@ -26,6 +26,7 @@
                             :data-source="level1"
                             :loading="loading"
                             :pagination="false"
+                            size="small"
                             :defaultExpandAllRows="true"
                     >
                         <template #name="{ text, record }">
@@ -42,7 +43,7 @@
                                         cancel-text="否"
                                         @confirm="handleDelete(record.id)"
                                 >
-                                    <a-button type="danger">
+                                    <a-button type="danger" size="small">
                                         删除
                                     </a-button>
                                 </a-popconfirm>
@@ -123,6 +124,9 @@
             param.value = {};
             const docs = ref();
             const loading = ref(false);
+            // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
+            const treeSelectData = ref();
+            treeSelectData.value = [];
 
             const columns = [
                 {
@@ -158,7 +162,7 @@
                 loading.value = true;
                 // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
                 level1.value = [];
-                axios.get("/doc/all").then((response) => {
+                axios.get("/doc/all/" + route.query.ebookId).then((response) => {
                     loading.value = false;
                     const data = response.data;
                     if (data.success) {
@@ -168,16 +172,19 @@
                         level1.value = [];
                         level1.value = Tool.array2Tree(docs.value, 0);
                         console.log("树形结构：", level1);
+
+                        // 父文档下拉框初始化，相当于点击新增
+                        treeSelectData.value = Tool.copy(level1.value);
+                        // 为选择树添加一个"无"
+                        treeSelectData.value.unshift({id: 0, name: '无'});
                     } else {
+                        console.log("handleQuery执行失败")
                         message.error(data.message);
                     }
                 });
             };
 
             // -------- 表单 ---------
-            // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
-            const treeSelectData = ref();
-            treeSelectData.value = [];
             const doc = ref();
             doc.value = {};
             const modalVisible = ref(false);
@@ -291,7 +298,6 @@
                 editor.txt.html("");
                 modalVisible.value = true;
                 doc.value = Tool.copy(record);
-
                 handleQueryContent();
 
                 // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
@@ -344,6 +350,7 @@
 
             onMounted(() => {
                 handleQuery();
+
                 editor.create();
             });
 

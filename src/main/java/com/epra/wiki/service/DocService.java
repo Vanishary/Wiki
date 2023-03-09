@@ -72,9 +72,10 @@ public class DocService {
      * @param
      * @return
      */
-    public List<DocQueryResp> all() {
+    public List<DocQueryResp> all(Long ebookId) {
 
         DocExample docExample = new DocExample();
+        docExample.createCriteria().andEbookIdEqualTo(ebookId);
         docExample.setOrderByClause("sort asc");
         DocExample.Criteria criteria = docExample.createCriteria();
 
@@ -127,10 +128,10 @@ public class DocService {
 
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
-        if (content != null) {
-            return content.getContent();
-        } else {
+        if (ObjectUtils.isEmpty(content)) {
             return "";
+        } else {
+            return content.getContent() ;
         }
     }
 }
