@@ -5,6 +5,7 @@ import AdminEbook from '../views/admin/admin-ebook.vue'
 import AdminCategory from '../views/admin/admin-category.vue'
 import AdminDoc from '../views/admin/admin-doc.vue'
 import Doc from '../views/doc.vue'
+import AdminUser from '../views/admin/admin-user.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -27,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
         // component: () => import(/* webpackChunkName: "about" */ '../views/about.vue')
     },
     {
+        path: '/admin/user',
+        name: 'AdminUser',
+        component: AdminUser
+    },
+    {
         path: '/admin/ebook',
         name: 'AdminEbook',
         component: AdminEbook
@@ -41,6 +47,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'AdminDoc',
         component: AdminDoc
     },
+
 ]
 
 const router = createRouter({

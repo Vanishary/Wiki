@@ -1,6 +1,11 @@
-package com.epra.wiki.domain;
+package com.epra.wiki.resp;
 
-public class User {
+/**
+ * @Author: Guotao Li
+ * @DateTime: 2023/6/11 11:03 上午
+ * @Description: TODO
+ */
+public class UserQueryResp {
     private Long id;
 
     private String loginName;

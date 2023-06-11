@@ -1,6 +1,5 @@
 package com.epra.wiki.service;
 
-import com.epra.wiki.controller.DemoController;
 import com.epra.wiki.domain.Ebook;
 import com.epra.wiki.domain.EbookExample;
 import com.epra.wiki.mapper.EbookMapper;
@@ -27,7 +26,7 @@ import java.util.List;
  */
 @Service
 public class EbookService {
-    private static final Logger LOG = LoggerFactory.getLogger(DemoController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EbookService.class);
 
     @Resource
     private EbookMapper ebookMapper;
