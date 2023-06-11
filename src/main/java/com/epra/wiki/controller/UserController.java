@@ -8,6 +8,7 @@ import com.epra.wiki.resp.UserQueryResp;
 import com.epra.wiki.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,6 +38,7 @@ public class UserController {
 
     @PostMapping("/save")
     public CommonResp save(@Valid @RequestBody UserSaveReq userReq) {
+        userReq.setPassword(DigestUtils.md5DigestAsHex(userReq.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.save(userReq);
         return resp;
