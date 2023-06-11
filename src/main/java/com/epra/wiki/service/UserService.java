@@ -78,8 +78,9 @@ public class UserService {
             }
 
         } else {
-            // 更新
-            userMapper.updateByPrimaryKey(user);
+            user.setLoginName(null);
+            // 使用Selective时，user中有值更新，空不更新
+            userMapper.updateByPrimaryKeySelective(user);
         }
     }
 
