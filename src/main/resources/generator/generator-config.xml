@@ -26,6 +26,8 @@
                         connectionURL="jdbc:mysql://localhost:3306/wiki"
                         userId="wikitest"
                         password="Passw0rd">
+            <!-- 解决连接到别的数据库表名问题 -->
+            <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
 
         <!-- domain类的位置 -->

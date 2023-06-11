@@ -1,12 +1,25 @@
-package com.epra.wiki.domain;
+package com.epra.wiki.req;
 
-public class User {
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+/**
+ * @Author: Guotao Li
+ * @DateTime: 2023/6/11 11:00 上午
+ * @Description: TODO
+ */
+public class UserSaveReq {
     private Long id;
 
+    @NotNull(message = "【用户名】不能为空")
     private String loginName;
 
+    @NotNull(message = "【昵称】不能为空")
     private String name;
 
+    @NotNull(message = "【密码】不能为空")
+//    @Length(min = 6,max = 20,message = "【密码】长度为6～20位")
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$", message = "【密码】至少包含 数字和英文，长度6-20")
     private String password;
 
     public Long getId() {
