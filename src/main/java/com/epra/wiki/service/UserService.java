@@ -2,6 +2,8 @@ package com.epra.wiki.service;
 
 import com.epra.wiki.domain.User;
 import com.epra.wiki.domain.UserExample;
+import com.epra.wiki.exception.BusinessException;
+import com.epra.wiki.exception.BusinessExceptionCode;
 import com.epra.wiki.mapper.UserMapper;
 import com.epra.wiki.req.UserQueryReq;
 import com.epra.wiki.req.UserSaveReq;
@@ -14,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -64,9 +67,16 @@ public class UserService {
     public void save(UserSaveReq userSaveReq) {
         User user = CopyUtil.copy(userSaveReq, User.class);
         if (ObjectUtils.isEmpty(userSaveReq.getId())) {
-            // 新增
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);
+            User user1 =  selectByLoginName(userSaveReq.getLoginName());
+            if (ObjectUtils.isEmpty(user1)) {
+                // 新增
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);
+            } else {
+                // 用户已存在
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
+
         } else {
             // 更新
             userMapper.updateByPrimaryKey(user);
@@ -84,5 +94,16 @@ public class UserService {
         // 更新
 //            ebookMapper.updateByPrimaryKey(ebook);
 //        }
+    }
+
+    public User selectByLoginName(String LoginName) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(LoginName);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(userList)) {
+            return null;
+        }
+        return userList.get(0);
     }
 }

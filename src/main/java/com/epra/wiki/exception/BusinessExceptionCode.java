@@ -5,5 +5,21 @@ package com.epra.wiki.exception;
  * @DateTime: 2023/6/11 7:38 下午
  * @Description: TODO
  */
-public class BusinessExceptionCode {
+public enum BusinessExceptionCode {
+    USER_LOGIN_NAME_EXIST("登录名已存在"),
+    ;
+
+    private String desc;
+
+    BusinessExceptionCode(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 }
