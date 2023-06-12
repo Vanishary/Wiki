@@ -6,6 +6,7 @@ import com.epra.wiki.exception.BusinessException;
 import com.epra.wiki.exception.BusinessExceptionCode;
 import com.epra.wiki.mapper.UserMapper;
 import com.epra.wiki.req.UserQueryReq;
+import com.epra.wiki.req.UserResetPasswordReq;
 import com.epra.wiki.req.UserSaveReq;
 import com.epra.wiki.resp.PageResp;
 import com.epra.wiki.resp.UserQueryResp;
@@ -59,6 +60,14 @@ public class UserService {
         pageResp.setList(respList);
 
         return pageResp;
+    }
+
+    /**
+     * 重置密码
+     */
+    public void resetPassword(UserResetPasswordReq userResetPasswordReq) {
+        User user = CopyUtil.copy(userResetPasswordReq, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     /**

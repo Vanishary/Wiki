@@ -1,6 +1,7 @@
 package com.epra.wiki.controller;
 
 import com.epra.wiki.req.UserQueryReq;
+import com.epra.wiki.req.UserResetPasswordReq;
 import com.epra.wiki.req.UserSaveReq;
 import com.epra.wiki.resp.CommonResp;
 import com.epra.wiki.resp.PageResp;
@@ -48,6 +49,14 @@ public class UserController {
     public CommonResp delete(@PathVariable long id) {
         CommonResp resp = new CommonResp<>();
         userService.delete(id);
+        return resp;
+    }
+
+    @PostMapping("/reset-password")
+    public CommonResp resetPassword(@Valid @RequestBody UserResetPasswordReq userResetPasswordReq) {
+        userResetPasswordReq.setPassword(DigestUtils.md5DigestAsHex(userResetPasswordReq.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        userService.resetPassword(userResetPasswordReq);
         return resp;
     }
 }
