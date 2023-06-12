@@ -1,9 +1,6 @@
 <template>
     <a-layout-header class="header">
         <div class="logo"/>
-        <a class="login-menu" @click="showLoginModal">
-            <span>登录</span>
-        </a>
         <a-menu
                 theme="dark"
                 mode="horizontal"
@@ -30,15 +27,16 @@
             <a-menu-item key="/about">
                 <router-link to="/about">关于我们</router-link>
             </a-menu-item>
+
         </a-menu>
 
         <a-modal title="登录" v-model:visible="loginModalVisible" :confirm-loading="loginMdalLoading" @ok="login">
             <a-form :model="loginUser" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
                 <a-form-item label="登录名">
-                    <a-input v-model:value="loginUser.loginName"/>
+                    <a-input v-model:value="loginUser.loginName" />
                 </a-form-item>
                 <a-form-item label="密码">
-                    <a-input v-model:value="loginUser.password" type="password"/>
+                    <a-input v-model:value="loginUser.password" type="password" />
                 </a-form-item>
             </a-form>
         </a-modal>
@@ -47,16 +45,11 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, ref} from 'vue';
-    import axios from 'axios';
-    import {message} from 'ant-design-vue';
-
-    declare let hexMd5: any;
-    declare let KEY: any;
+    import { defineComponent, ref } from 'vue';
 
     export default defineComponent({
         name: 'the-header',
-        setup() {
+        setup () {
             const loginUser = ref({
                 loginName: "test",
                 password: "test"
@@ -69,21 +62,7 @@
 
             // 登录
             const login = () => {
-                console.log("开始登录");
-                loginModalLoading.value = true;
-                loginUser.value.password = hexMd5(loginUser.value.password + KEY
-            )
-                ;
-                axios.post('/user/login', loginUser.value).then((response) => {
-                    loginModalLoading.value = false;
-                    const data = response.data;
-                    if (data.success) {
-                        loginModalVisible.value = false;
-                        message.success("登录成功！");
-                    } else {
-                        message.error(data.message);
-                    }
-                });
+                console.log("开始登录")
             };
 
             return {
