@@ -79,6 +79,7 @@ public class UserService {
 
         } else {
             user.setLoginName(null);
+            user.setPassword(null);
             // 使用Selective时，user中有值更新，空不更新
             userMapper.updateByPrimaryKeySelective(user);
         }
