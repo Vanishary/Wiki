@@ -1,10 +1,12 @@
 package com.epra.wiki.controller;
 
+import com.epra.wiki.req.UserLoginReq;
 import com.epra.wiki.req.UserQueryReq;
 import com.epra.wiki.req.UserResetPasswordReq;
 import com.epra.wiki.req.UserSaveReq;
 import com.epra.wiki.resp.CommonResp;
 import com.epra.wiki.resp.PageResp;
+import com.epra.wiki.resp.UserLoginResp;
 import com.epra.wiki.resp.UserQueryResp;
 import com.epra.wiki.service.UserService;
 import org.slf4j.Logger;
@@ -57,6 +59,15 @@ public class UserController {
         userResetPasswordReq.setPassword(DigestUtils.md5DigestAsHex(userResetPasswordReq.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.resetPassword(userResetPasswordReq);
+        return resp;
+    }
+
+    @PostMapping("/login")
+    public CommonResp login(@Valid @RequestBody UserLoginReq userLoginReq) {
+        userLoginReq.setPassword(DigestUtils.md5DigestAsHex(userLoginReq.getPassword().getBytes()));
+        CommonResp<UserLoginResp> resp = new CommonResp<>();
+        UserLoginResp userLoginResp = userService.login(userLoginReq);
+        resp.setContent(userLoginResp);
         return resp;
     }
 }

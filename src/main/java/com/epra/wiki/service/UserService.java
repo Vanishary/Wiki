@@ -5,10 +5,12 @@ import com.epra.wiki.domain.UserExample;
 import com.epra.wiki.exception.BusinessException;
 import com.epra.wiki.exception.BusinessExceptionCode;
 import com.epra.wiki.mapper.UserMapper;
+import com.epra.wiki.req.UserLoginReq;
 import com.epra.wiki.req.UserQueryReq;
 import com.epra.wiki.req.UserResetPasswordReq;
 import com.epra.wiki.req.UserSaveReq;
 import com.epra.wiki.resp.PageResp;
+import com.epra.wiki.resp.UserLoginResp;
 import com.epra.wiki.resp.UserQueryResp;
 import com.epra.wiki.util.CopyUtil;
 import com.epra.wiki.util.SnowFlake;
@@ -116,5 +118,28 @@ public class UserService {
             return null;
         }
         return userList.get(0);
+    }
+
+    /**
+     * 登录
+     */
+    public UserLoginResp login(UserLoginReq userLoginReq) {
+        User userDb = selectByLoginName(userLoginReq.getLoginName());
+
+        if (ObjectUtils.isEmpty(userDb)) {
+            // 用户不存在
+            LOG.info("用户不存在,{}", userLoginReq.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        } else {
+            if (userDb.getPassword().equals(userLoginReq.getPassword())) {
+                // 验证成功
+                UserLoginResp userLoginResp =  CopyUtil.copy(userDb,UserLoginResp.class);
+                return userLoginResp;
+            } else {
+                // 密码校验不通过
+                LOG.info("密码不对，用户名：{},输入密码：{}",userLoginReq.getLoginName(),userLoginReq.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+        }
     }
 }
