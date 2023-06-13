@@ -1,11 +1,11 @@
- <template>
-    <a-layout-footer style="text-align: center" >
-        @Wiki EPRA，欢迎： {{user.name}}
+<template>
+    <a-layout-footer style="text-align: center">
+        甲蛙电子书<span v-show="user.id">，欢迎：{{user.name}}</span>
     </a-layout-footer>
 </template>
 
 <script lang="ts">
-    import { defineComponent,computed } from 'vue';
+    import { defineComponent, computed } from 'vue';
     import store from "@/store";
 
     export default defineComponent({
