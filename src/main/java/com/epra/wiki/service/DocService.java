@@ -142,5 +142,10 @@ public class DocService {
             return content.getContent() ;
         }
     }
+
+    public void voteCount(Long id) {
+        // 文档点赞数+1
+        docMapperCust.increaseVoteCount(id);
+    }
 }
 
