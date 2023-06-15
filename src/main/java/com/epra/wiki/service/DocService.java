@@ -4,6 +4,8 @@ import com.epra.wiki.controller.DemoController;
 import com.epra.wiki.domain.Content;
 import com.epra.wiki.domain.Doc;
 import com.epra.wiki.domain.DocExample;
+import com.epra.wiki.exception.BusinessException;
+import com.epra.wiki.exception.BusinessExceptionCode;
 import com.epra.wiki.mapper.ContentMapper;
 import com.epra.wiki.mapper.DocMapper;
 import com.epra.wiki.mapper.DocMapperCust;
@@ -12,6 +14,8 @@ import com.epra.wiki.req.DocSaveReq;
 import com.epra.wiki.resp.DocQueryResp;
 import com.epra.wiki.resp.PageResp;
 import com.epra.wiki.util.CopyUtil;
+import com.epra.wiki.util.RedisUtil;
+import com.epra.wiki.util.RequestContext;
 import com.epra.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -43,6 +47,9 @@ public class DocService {
 
     @Resource
     private SnowFlake snowFlake;
+
+    @Resource
+    public RedisUtil redisUtil;
 
     public PageResp<DocQueryResp> list(DocQueryReq docQueryReq) {
 
@@ -134,18 +141,24 @@ public class DocService {
 
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
-        // 文档阅读数+1
+        // 文档阅读数1
         docMapperCust.increaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";
         } else {
-            return content.getContent() ;
+            return content.getContent();
         }
     }
 
     public void voteCount(Long id) {
-        // 文档点赞数+1
-        docMapperCust.increaseVoteCount(id);
+        // docMapperCust.increaseVoteCount(id);
+        // 远程IPdoc.id作为key，24小时内不能重复
+        String ip = RequestContext.getRemoteAddr();
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id +"_" + ip, 3600 * 24)) {
+            docMapperCust.increaseVoteCount(id);
+        } else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
     }
 }
 
