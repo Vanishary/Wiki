@@ -1,7 +1,7 @@
 <template>
     <a-layout>
         <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
-            <h3 v-if="level1.length === 0" align="center">对不起，暂时还没有录入相关文档！</h3>
+            <h3 v-if="level1.length === 0">对不起，找不到相关文档！</h3>
             <a-row>
                 <a-col :span="6">
                     <a-tree
@@ -15,7 +15,20 @@
                     </a-tree>
                 </a-col>
                 <a-col :span="18">
+                    <div>
+                        <h2>{{doc.name}}</h2>
+                        <div>
+                            <span>阅读数：{{doc.viewCount}}</span> &nbsp; &nbsp;
+                            <span>点赞数：{{doc.voteCount}}</span>
+                        </div>
+                        <a-divider style="height: 2px; background-color: #9999cc"/>
+                    </div>
                     <div class="wangeditor" :innerHTML="html"></div>
+                    <div class="vote-div">
+                        <a-button type="primary" shape="round" :size="'large'" @click="vote">
+                            <template #icon><LikeOutlined /> &nbsp;点赞：{{doc.voteCount}} </template>
+                        </a-button>
+                    </div>
                 </a-col>
             </a-row>
         </a-layout-content>
@@ -23,7 +36,7 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent, onMounted, ref, createVNode} from 'vue';
+    import { defineComponent, onMounted, ref, createVNode } from 'vue';
     import axios from 'axios';
     import {message} from 'ant-design-vue';
     import {Tool} from "@/util/tool";
@@ -37,6 +50,9 @@
             const html = ref();
             const defaultSelectedKeys = ref();
             defaultSelectedKeys.value = [];
+            // 当前选中的文档
+            const doc = ref();
+            doc.value = {};
 
             /**
              * 一级文档树，children属性就是二级文档
@@ -81,6 +97,8 @@
                         if (Tool.isNotEmpty(level1)) {
                             defaultSelectedKeys.value = [level1.value[0].id];
                             handleQueryContent(level1.value[0].id);
+                            // 初始显示文档信息
+                            doc.value = level1.value[0];
                         }
                     } else {
                         message.error(data.message);
@@ -88,13 +106,26 @@
                 });
             };
 
-
             const onSelect = (selectedKeys: any, info: any) => {
                 console.log('selected', selectedKeys, info);
                 if (Tool.isNotEmpty(selectedKeys)) {
+                    // 选中某一节点时，加载该节点的文档信息
+                    doc.value = info.selectedNodes[0].props;
                     // 加载内容
                     handleQueryContent(selectedKeys[0]);
                 }
+            };
+
+            // 点赞
+            const vote = () => {
+                axios.get('/doc/vote/' + doc.value.id).then((response) => {
+                    const data = response.data;
+                    if (data.success) {
+                        doc.value.voteCount++;
+                    } else {
+                        message.error(data.message);
+                    }
+                });
             };
 
             onMounted(() => {
@@ -105,7 +136,9 @@
                 level1,
                 html,
                 onSelect,
-                defaultSelectedKeys
+                defaultSelectedKeys,
+                doc,
+                vote
             }
         }
     });
@@ -118,21 +151,18 @@
         border-top: 1px solid #ccc;
         border-left: 1px solid #ccc;
     }
-
     .wangeditor table td,
     .wangeditor table th {
         border-bottom: 1px solid #ccc;
         border-right: 1px solid #ccc;
         padding: 3px 5px;
     }
-
     .wangeditor table th {
         border-bottom: 2px solid #ccc;
         text-align: center;
     }
 
-    +
-        /* blockquote 样式 */
+    /* blockquote 样式 */
     .wangeditor blockquote {
         display: block;
         border-left: 8px solid #d0e5f2;
@@ -143,8 +173,7 @@
         background-color: #f1f1f1;
     }
 
-    +
-        /* code 样式 */
+    /* code 样式 */
     .wangeditor code {
         display: inline-block;
         *display: inline;
@@ -154,22 +183,26 @@
         padding: 3px 5px;
         margin: 0 3px;
     }
-
     .wangeditor pre code {
         display: block;
     }
 
-    +
-        /* ul ol 样式 */
+    /* ul ol 样式 */
     .wangeditor ul, ol {
         margin: 10px 0 10px 20px;
     }
 
     /* 和antdv p冲突，覆盖掉 */
     .wangeditor blockquote p {
-        font-family: "YouYuan";
+        font-family:"YouYuan";
         margin: 20px 10px !important;
         font-size: 16px !important;
-        font-weight: 600;
+        font-weight:600;
+    }
+
+    /* 点赞 */
+    .vote-div {
+        padding: 15px;
+        text-align: center;
     }
 </style>

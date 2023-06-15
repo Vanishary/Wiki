@@ -6,6 +6,7 @@ import com.epra.wiki.domain.Doc;
 import com.epra.wiki.domain.DocExample;
 import com.epra.wiki.mapper.ContentMapper;
 import com.epra.wiki.mapper.DocMapper;
+import com.epra.wiki.mapper.DocMapperCust;
 import com.epra.wiki.req.DocQueryReq;
 import com.epra.wiki.req.DocSaveReq;
 import com.epra.wiki.resp.DocQueryResp;
@@ -33,6 +34,9 @@ public class DocService {
 
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private DocMapperCust docMapperCust;
 
     @Resource
     private ContentMapper contentMapper;
@@ -97,6 +101,8 @@ public class DocService {
         if (ObjectUtils.isEmpty(doc.getId())) {
             // 新增
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             docMapper.insert(doc);
 
             content.setId(doc.getId());
@@ -128,6 +134,8 @@ public class DocService {
 
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
+        // 文档阅读数+1
+        docMapperCust.increaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";
         } else {
