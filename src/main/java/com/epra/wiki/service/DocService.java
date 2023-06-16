@@ -154,11 +154,18 @@ public class DocService {
         // docMapperCust.increaseVoteCount(id);
         // 远程IPdoc.id作为key，24小时内不能重复
         String ip = RequestContext.getRemoteAddr();
-        if (redisUtil.validateRepeat("DOC_VOTE_" + id +"_" + ip, 3600 * 24)) {
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)) {
             docMapperCust.increaseVoteCount(id);
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
+    }
+
+    /**
+     * 定时更新Ebook点赞、阅读数等信息
+     */
+    public void updateEbookInfo() {
+        docMapperCust.updateEbookInfo();
     }
 }
 
