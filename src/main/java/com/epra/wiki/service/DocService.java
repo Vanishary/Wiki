@@ -1,5 +1,6 @@
 package com.epra.wiki.service;
 
+import com.epra.wiki.WebSocket.WebSocketServer;
 import com.epra.wiki.controller.DemoController;
 import com.epra.wiki.domain.Content;
 import com.epra.wiki.domain.Doc;
@@ -50,6 +51,9 @@ public class DocService {
 
     @Resource
     public RedisUtil redisUtil;
+
+    @Resource
+    public WebSocketServer webSocketServer;
 
     public PageResp<DocQueryResp> list(DocQueryReq docQueryReq) {
 
@@ -159,6 +163,10 @@ public class DocService {
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
+
+        // 推送消息
+        Doc docDb = docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("【" + docDb.getName() + "】被点赞！");
     }
 
     /**
