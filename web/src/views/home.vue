@@ -23,7 +23,7 @@
         </a-layout-sider>
         <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
             <div class="welcome" v-show="isShowWelcome">
-                <h1>欢迎使用Epra Wiki</h1>
+                <the-welcome></the-welcome>
             </div>
             <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3}"
                     :data-source="ebooks">
@@ -65,6 +65,7 @@
     import axios from 'axios';
     import {message} from "ant-design-vue";
     import {Tool} from "@/util/tool";
+    import TheWelcome from '@/components/the-welcome.vue';
 
     // const listData: any = [];
     //
@@ -155,6 +156,9 @@
 
             return {
                 ebooks,
+                components: {
+                    TheWelcome
+                },
                 // toRef()将变量转变为响应式变量
                 // any_name: toRef(ebooks1, "books"),
                 // listData,
