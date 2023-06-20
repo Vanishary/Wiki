@@ -84,6 +84,9 @@
 
     export default defineComponent({
         name: 'Home',
+        components: {
+            TheWelcome
+        },
         // setup()中写参数定义、方法定义，初始化方法，组件加载完后初始执行的方法。setup()执行时界面没有渲染好
         setup() {
             // ref()定义响应式数据，即在js中动态的修改里面的值
