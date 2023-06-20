@@ -1,4 +1,5 @@
 package com.epra.wiki.controller;
+
 import com.epra.wiki.resp.CommonResp;
 import com.epra.wiki.resp.StatisticResp;
 import com.epra.wiki.service.EbookSnapshotService;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 /**
  * @Author: Guotao Li
  * @DateTime: 2023/6/19 4:44 下午
@@ -23,6 +25,14 @@ public class EbookSnapshotController {
     @GetMapping("/get-statistic")
     public CommonResp getStatistic() {
         List<StatisticResp> statisticResp = ebookSnapshotService.getStatistic();
+        CommonResp<List<StatisticResp>> commonResp = new CommonResp<>();
+        commonResp.setContent(statisticResp);
+        return commonResp;
+    }
+
+    @GetMapping("/get-30-statistic")
+    public CommonResp get30Statistic() {
+        List<StatisticResp> statisticResp = ebookSnapshotService.get30Statistic();
         CommonResp<List<StatisticResp>> commonResp = new CommonResp<>();
         commonResp.setContent(statisticResp);
         return commonResp;
