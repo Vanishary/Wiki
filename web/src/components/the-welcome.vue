@@ -7,14 +7,14 @@
                         <a-col :span="8">
                             <a-statistic title="总阅读量" :value="statistic.viewCount">
                                 <template #suffix>
-                                    <UserOutlined />
+                                    <UserOutlined/>
                                 </template>
                             </a-statistic>
                         </a-col>
                         <a-col :span="8">
                             <a-statistic title="总点赞量" :value="statistic.voteCount">
                                 <template #suffix>
-                                    <like-outlined />
+                                    <like-outlined/>
                                 </template>
                             </a-statistic>
                         </a-col>
@@ -24,7 +24,7 @@
                                          suffix="%"
                                          :value-style="{ color: '#cf1322' }">
                                 <template #suffix>
-                                    <like-outlined />
+                                    <like-outlined/>
                                 </template>
                             </a-statistic>
                         </a-col>
@@ -40,14 +40,14 @@
                         <a-col :span="12">
                             <a-statistic title="今日阅读" :value="statistic.todayViewCount" style="margin-right: 50px">
                                 <template #suffix>
-                                    <UserOutlined />
+                                    <UserOutlined/>
                                 </template>
                             </a-statistic>
                         </a-col>
                         <a-col :span="12">
                             <a-statistic title="今日点赞" :value="statistic.todayVoteCount">
                                 <template #suffix>
-                                    <like-outlined />
+                                    <like-outlined/>
                                 </template>
                             </a-statistic>
                         </a-col>
@@ -64,7 +64,7 @@
                                     :value-style="{ color: '#0000ff' }"
                             >
                                 <template #suffix>
-                                    <UserOutlined />
+                                    <UserOutlined/>
                                 </template>
                             </a-statistic>
                         </a-col>
@@ -87,16 +87,24 @@
                 </a-card>
             </a-col>
         </a-row>
+        <br>
+        <a-row>
+            <a-col :span="24">
+                <div id="main" style="width: 100%;height:300px;"></div>
+            </a-col>
+        </a-row>
     </div>
 </template>
 
 <script lang="ts">
-    import { defineComponent, ref, onMounted } from 'vue'
+    import {defineComponent, ref, onMounted} from 'vue'
     import axios from 'axios';
+
+    declare let echarts: any;
 
     export default defineComponent({
         name: 'the-welcome',
-        setup () {
+        setup() {
             const statistic = ref();
             statistic.value = {};
             const getStatistic = () => {
@@ -121,8 +129,37 @@
                 });
             };
 
+            const testEcharts = () => {
+                // 基于准备好的dom，初始化echarts实例
+                const myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+                const option = {
+                    title: {
+                        text: '网站访问数据'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['访问量']
+                    },
+                    xAxis: {
+                        data: ["5天内","一周内","两周内","近一月","近半年","近一年"]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data: [5, 20, 36, 10, 10, 20]
+                    }]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            };
+
             onMounted(() => {
                 getStatistic();
+                testEcharts();
             });
 
             return {
